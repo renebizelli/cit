@@ -1,4 +1,5 @@
-﻿using Ambev.DeveloperEvaluation.Domain.Repositories;
+﻿using Ambev.DeveloperEvaluation.Domain.Common;
+using Ambev.DeveloperEvaluation.Domain.Repositories;
 using StackExchange.Redis;
 using System.Text.Json;
 
@@ -12,16 +13,16 @@ public class RedisRepository : ICacheRepository
         cache = multiplexer.GetDatabase();
     }
 
-    public async Task SetAsync<T>(string key, T data)
+    public async Task SetAsync<T>(CacheSetOptions cacheSetOptions, T data)
     {
         var json = JsonSerializer.Serialize(data);
 
-        await cache.StringSetAsync(key, json);
+        await cache.StringSetAsync(cacheSetOptions.Key, json, cacheSetOptions.Expiry);
     }
 
-    public async Task<T?> GetAsync<T>(string key)
+    public async Task<T?> GetAsync<T>(CacheGetOptions cacheGetOptions)
     {
-        var json = await cache.StringGetAsync(key);
+        var json = await cache.StringGetAsync(cacheGetOptions.Key);
 
         if (json.IsNull) return default(T);
 

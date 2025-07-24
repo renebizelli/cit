@@ -1,6 +1,8 @@
-﻿using Ambev.DeveloperEvaluation.Application.Carts.GetCartByUser;
+﻿using Ambev.DeveloperEvaluation.Application.Carts.CreateOrUpdateCart;
+using Ambev.DeveloperEvaluation.Application.Carts.GetCartByUser;
 using Ambev.DeveloperEvaluation.WebApi.Common;
-using Ambev.DeveloperEvaluation.WebApi.Features.Users.GetUser;
+using Ambev.DeveloperEvaluation.WebApi.Features.Carts.CreateOrUpdateCart;
+using Ambev.DeveloperEvaluation.WebApi.Features.Carts.GetCartByUser;
 using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -20,21 +22,44 @@ public class CartsController : BaseController
         _mapper = mapper;
     }
 
-    [HttpGet("{id}")]
-    [ProducesResponseType(typeof(ApiResponseWithData<GetUserResponse>), StatusCodes.Status200OK)]
+
+    [HttpPost()]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetCart([FromRoute] string id, CancellationToken cancellationToken)
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> CreateCart([FromBody] CreateOrUpdateCartRequest request, CancellationToken cancellationToken)
     {
-        var command = new GetCartByUserCommand { Name = DateTime.Now.ToString() };
+        request.UserId = GetCurrentUserId();
+
+        var actionResult = await ValidateAsync<CreateOrUpdateCartRequestValidator, CreateOrUpdateCartRequest>(request, cancellationToken);
+        if(actionResult != null) return actionResult;
+
+        var command = _mapper.Map<CreateOrUpdateCartCommand>(request);
 
         await _mediator.Send(command, cancellationToken);
 
-        return Ok(new ApiResponse
-        {
-            Success = true,
-            Message = "User deleted successfully"
-        });
+        return Created();
     }
+
+    [HttpGet("branch/{branchId}")]
+    [ProducesResponseType(typeof(ApiResponseWithData<GetCartByUserResponse>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetCart([FromRoute] GetCartByUserRequest request, CancellationToken cancellationToken)
+    {
+        request.UserId = GetCurrentUserId();
+
+        var actionResult = await ValidateAsync<GetCartByUserRequestValidator, GetCartByUserRequest>(request, cancellationToken);
+        if (actionResult != null) return actionResult;
+
+        var command = _mapper.Map<GetCartByUserCommand>(request);
+
+        var response = await _mediator.Send(command, cancellationToken);
+
+        var result = _mapper.Map<GetCartByUserResponse>(response);
+
+        return Ok(result);
+    }
+
+
+
 
 }

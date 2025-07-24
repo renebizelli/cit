@@ -1,9 +1,8 @@
-﻿using MediatR;
+﻿using Ambev.DeveloperEvaluation.Domain.Common;
+using MediatR;
 
 namespace Ambev.DeveloperEvaluation.Application.Carts.GetCartByUser;
 
-public class GetCartByUserCommand : IRequest
+public class GetCartByUserCommand : CartKey,  IRequest<GetCartByUserResult>
 {
-    public int Id { get; set; }
-    public string Name { get; set; }
 }
