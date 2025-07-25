@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
 namespace Ambev.DeveloperEvaluation.WebApi.Common;
@@ -7,8 +8,10 @@ namespace Ambev.DeveloperEvaluation.WebApi.Common;
 [ApiController]
 public class BaseController : ControllerBase
 {
-    protected int GetCurrentUserId() =>
-            int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? throw new NullReferenceException());
+    protected Guid GetCurrentUserId() => Guid.Parse("4c1a10c2-3f2f-4a5c-ae47-83a17fcb87cb");
+
+    //protected Guid GetCurrentUserId() =>
+    //         Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? throw new NullReferenceException());
 
     protected string GetCurrentUserEmail() =>
         User.FindFirst(ClaimTypes.Email)?.Value ?? throw new NullReferenceException();
@@ -34,4 +37,16 @@ public class BaseController : ControllerBase
                 TotalCount = pagedList.TotalCount,
                 Success = true
             });
+
+    protected async Task<IActionResult?> ValidateAsync<TValidator, TRequest>(TRequest request, CancellationToken cancellationToken)
+        where TValidator : AbstractValidator<TRequest>, new()
+        where TRequest : class
+    {
+        var validator = new TValidator();
+        var validationResult = await validator.ValidateAsync(request, cancellationToken);
+
+        if (!validationResult.IsValid) return BadRequest(validationResult.Errors);
+
+        return null;
+    }
 }
