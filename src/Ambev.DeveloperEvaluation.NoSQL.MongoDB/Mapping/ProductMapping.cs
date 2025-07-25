@@ -17,7 +17,7 @@ public class ProductMapping
             map.MapProperty(p => p.Category).SetElementName("category");
         });
 
-        BsonClassMap.RegisterClassMap<ProductCategory>(map =>
+        BsonClassMap.RegisterClassMap<Category>(map =>
         {
             map.MapIdProperty(p => p.Id);
             map.MapProperty(p => p.Name).SetElementName("name");
