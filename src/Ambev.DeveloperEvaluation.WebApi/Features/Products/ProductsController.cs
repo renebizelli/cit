@@ -1,7 +1,9 @@
 ﻿using Ambev.DeveloperEvaluation.Application.Products.CreateProduct;
+using Ambev.DeveloperEvaluation.Application.Products.ListProducts;
 using Ambev.DeveloperEvaluation.WebApi.Common;
 using Ambev.DeveloperEvaluation.WebApi.Features.Carts.CreateOrUpdateCart;
 using Ambev.DeveloperEvaluation.WebApi.Features.Products.CreateProduct;
+using Ambev.DeveloperEvaluation.WebApi.Features.Products.ListProducts;
 using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Http.Extensions;
@@ -18,9 +20,8 @@ public class ProductsController : BaseController
     }
 
     [HttpPost(Name = "CreateProduct")]
-    [ProducesResponseType(typeof(ApiResponseWithData<CreateProductResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponseWithData<CreateProductResponse>), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ApiResponseWithData<CreateProductResponse>), StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateProduct([FromBody] CreateProductRequest request, CancellationToken cancellationToken)
     {
         var actionResult = await ValidateAsync<CreateProductRequestValidator, CreateProductRequest>(request, cancellationToken);
@@ -75,26 +76,23 @@ public class ProductsController : BaseController
     //    return Ok(response);
     //}
 
-    //[HttpGet()]
-    //[ProducesResponseType(typeof(ApiResponseWithData<IList<ProductResponse>>), StatusCodes.Status200OK)]
-    //[ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
-    //[ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
-    //public async Task<IActionResult> ListProducts([FromQuery] ListProductsRequest request, CancellationToken cancellationToken)
-    //{
-    //    var validator = new ListProductsRequestValidator();
-    //    var validationResult = await validator.ValidateAsync(request, cancellationToken);
+    [HttpGet(Name = "ListProducts")]
+    [ProducesResponseType(typeof(ApiResponseWithData<IList<ProductResponse>>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> ListProducts([FromQuery] ListProductsRequest request, CancellationToken cancellationToken)
+    {
+        var actionResult = await ValidateAsync<ListProductsRequestValidator, ListProductsRequest>(request, cancellationToken);
+        if (actionResult != null) return actionResult;
 
-    //    if (!validationResult.IsValid)
-    //        return BadRequest(validationResult.Errors);
+        var command = _mapper.Map<ListProductsCommand>(request);
 
-    //    var command = _mapper.Map<ListProductsCommand>(request);
+        var response = await _mediator.Send(command, cancellationToken);
 
-    //    var response = await _mediator.Send(command, cancellationToken);
+        var data = _mapper.Map<Paginated<ProductResponse>>(response);
 
-    //    var data = _mapper.Map<Paginated<ProductResponse>>(response);
+        var paginatedList = new PaginatedList<ProductResponse>(data.Items, data.TotalCount, request.Page, request.PageSize);
 
-    //    var paginatedList = new PaginatedList<ProductResponse>(data.Items, data.TotalCount, request.Page, request.PageSize);
-
-    //    return OkPaginated(paginatedList);
-    //}
+        return OkPaginated(paginatedList);
+    }
 }

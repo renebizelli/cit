@@ -1,7 +1,12 @@
 ﻿using Ambev.DeveloperEvaluation.Domain.Entities;
+using Ambev.DeveloperEvaluation.Domain.Interfaces;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
+using Ambev.DeveloperEvaluation.NoSQL.MongoDB.Extensions;
+using Microsoft.EntityFrameworkCore;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using MongoDB.Driver.Linq;
+using System.Linq.Expressions;
 
 namespace Ambev.DeveloperEvaluation.NoSQL.MongoDB.Repositories;
 
@@ -70,4 +75,31 @@ public class ProductRepository : IProductRepository
 
         return await _collection.Find(filter).AnyAsync(cancellationToken);
     }
+
+    public async Task<(long, IList<Product>)> ListProductsAsync(IProductQueryOptions queryOptions, CancellationToken cancellationToken)
+    {
+        var allowedOrderFields = new Dictionary<string, Expression<Func<Product, object>>>(StringComparer.OrdinalIgnoreCase)
+        {
+            ["title"] = p => p.Title,
+            ["price"] = p => p.Price,
+            ["category"] = p => p.Category!.Name,
+        };
+
+        var filter = Builders<Product>.Filter.Eq(e => e.Active, true);
+
+        filter = filter.ApplyWhereLike(queryOptions.Title, e => e.Title);
+        filter = filter.ApplyWhereRange(queryOptions.MinPrice, queryOptions.MaxPrice, e => e.Price);
+
+        var query = _collection.Find(filter);
+
+        var count = await query.CountDocumentsAsync(cancellationToken);
+
+        var products = await query
+                         .ApplyOrdering(queryOptions.OrderCriteria, allowedOrderFields)
+                         .ApplyPaging(queryOptions.Page, queryOptions.PageSize)
+                         .ToListAsync(cancellationToken);
+
+        return (count, products);
+    }
 }
+
