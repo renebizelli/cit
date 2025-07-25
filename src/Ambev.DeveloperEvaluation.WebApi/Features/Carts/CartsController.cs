@@ -74,7 +74,7 @@ public class CartsController : BaseController
 
         await _mediator.Send(command, cancellationToken);
 
-        return Accepted();
+        return NoContent();
     }
 
 }
