@@ -9,9 +9,12 @@ public class CreateOrUpdateCartCommandValidator : AbstractValidator<CreateOrUpda
     {
         Include(new CartKeyValidator());
 
+        RuleFor(d => d.Items.Any()).NotEqual(false).WithMessage("##TODO: need to have at least one item");
+
         RuleForEach(d => d.Items)
             .ChildRules(item => {
-                item.RuleFor(i => i.Quantity).SetValidator(new QuantitySaleItemValidator()).WithMessage("quantity must to be great than zero");
+                item.RuleFor(i => i.Quantity).SetValidator(new QuantitySaleItemValidator()).WithMessage("##TODO: quantity must to be great than zero");
+                item.RuleFor(i => i.ProductId).NotEqual(0).WithMessage("##TODO: product id must to be great than zero");
             });
     }
 }
