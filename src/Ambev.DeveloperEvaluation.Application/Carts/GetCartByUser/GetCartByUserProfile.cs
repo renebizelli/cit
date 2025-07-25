@@ -7,6 +7,7 @@ public class GetCartByUserProfile : Profile
 {
     public GetCartByUserProfile()
     {
+        CreateMap<GetCartByUserCommand, Cart>();
         CreateMap<Cart, GetCartByUserResult>();
         CreateMap<CartItem, GetCartByUserResult.CartItem>();
     }

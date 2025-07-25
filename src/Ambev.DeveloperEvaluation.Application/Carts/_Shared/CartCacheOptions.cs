@@ -16,3 +16,8 @@ public record CartCacheGetOptions : CacheGetOptions
 {
     public CartCacheGetOptions(CartKey cartKey) : base(cartKey.KeyBuilder()) { }
 }
+
+public record CartCacheDeleteOptions : CacheDeleteOptions
+{
+    public CartCacheDeleteOptions(CartKey cartKey) : base(cartKey.KeyBuilder()) { }
+}
