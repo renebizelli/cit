@@ -10,6 +10,8 @@ public class CreateOrUpdateCartRequestValidator : AbstractValidator<CreateOrUpda
     {
         Include(new CartBaseRequestValidator());
 
+        RuleFor(d => d.Items.Any()).NotEqual(false).WithMessage("##TODO: need to have at least one item");
+
         RuleForEach(d => d.Items)
             .ChildRules(item => {
                 item.RuleFor(i => i.Quantity).SetValidator(new QuantitySaleItemValidator()).WithMessage("quantity must to be great than zero");

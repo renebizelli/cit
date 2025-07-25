@@ -1,7 +1,9 @@
 ﻿using Ambev.DeveloperEvaluation.Application.Carts.CreateOrUpdateCart;
+using Ambev.DeveloperEvaluation.Application.Carts.DeleteCart;
 using Ambev.DeveloperEvaluation.Application.Carts.GetCartByUser;
 using Ambev.DeveloperEvaluation.WebApi.Common;
 using Ambev.DeveloperEvaluation.WebApi.Features.Carts.CreateOrUpdateCart;
+using Ambev.DeveloperEvaluation.WebApi.Features.Carts.DeleteCart;
 using Ambev.DeveloperEvaluation.WebApi.Features.Carts.GetCartByUser;
 using AutoMapper;
 using MediatR;
@@ -59,7 +61,20 @@ public class CartsController : BaseController
         return Ok(result);
     }
 
+    [HttpDelete("branch/{branchId}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<IActionResult> DeleteCart([FromRoute] DeleteCartRequest request, CancellationToken cancellationToken)
+    {
+        request.UserId = GetCurrentUserId();
 
+        var actionResult = await ValidateAsync<DeleteCartRequestValidator, DeleteCartRequest>(request, cancellationToken);
+        if (actionResult != null) return actionResult;
 
+        var command = _mapper.Map<DeleteCartCommand>(request);
+
+        await _mediator.Send(command, cancellationToken);
+
+        return NoContent();
+    }
 
 }

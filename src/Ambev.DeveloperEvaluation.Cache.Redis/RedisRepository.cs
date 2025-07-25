@@ -28,4 +28,9 @@ public class RedisRepository : ICacheRepository
 
         return JsonSerializer.Deserialize<T>(json.ToString());
     }
+
+    public async Task DeleteAsync(CacheDeleteOptions cacheDeleteOptions)
+    {
+        await cache.KeyDeleteAsync(cacheDeleteOptions.Key);
+    }
 }

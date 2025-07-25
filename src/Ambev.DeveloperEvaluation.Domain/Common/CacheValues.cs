@@ -9,12 +9,20 @@ public abstract record CacheSetOptions : CacheGetOptions
     }
 }
 
-
 public abstract record CacheGetOptions
 {
     public string Key { get; protected set; } = string.Empty;
-
     protected CacheGetOptions(string key)
+    {
+        Key = key;
+    }
+}
+
+
+public abstract record CacheDeleteOptions
+{
+    public string Key { get; protected set; } = string.Empty;
+    protected CacheDeleteOptions(string key)
     {
         Key = key;
     }
