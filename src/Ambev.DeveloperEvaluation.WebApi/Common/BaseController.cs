@@ -1,4 +1,6 @@
-﻿using FluentValidation;
+﻿using AutoMapper;
+using FluentValidation;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
@@ -8,6 +10,15 @@ namespace Ambev.DeveloperEvaluation.WebApi.Common;
 [ApiController]
 public class BaseController : ControllerBase
 {
+    protected readonly IMediator _mediator;
+    protected readonly IMapper _mapper;
+
+    public BaseController(IMediator mediator, IMapper mapper)
+    {
+        _mediator = mediator;
+        _mapper = mapper;
+    }
+
     protected Guid GetCurrentUserId() => Guid.Parse("4c1a10c2-3f2f-4a5c-ae47-83a17fcb87cb");
 
     //protected Guid GetCurrentUserId() =>

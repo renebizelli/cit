@@ -60,4 +60,14 @@ public class ProductRepository : IProductRepository
 
         return result;
     }
+
+    public async Task<bool> IsNameAlreadyUsedAsync(string title, CancellationToken cancellationToken)
+    {
+        var filter =
+            Builders<Product>.Filter.And(
+            Builders<Product>.Filter.Eq(e => e.Title, title),
+            Builders<Product>.Filter.Eq(e => e.Active, true));
+
+        return await _collection.Find(filter).AnyAsync(cancellationToken);
+    }
 }

@@ -15,17 +15,11 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.Carts;
 [Route("api/[controller]")]
 public class CartsController : BaseController
 {
-    private readonly IMediator _mediator;
-    private readonly IMapper _mapper;
-
-    public CartsController(IMediator mediator, IMapper mapper)
+    public CartsController(IMediator mediator, IMapper mapper) : base(mediator, mapper)
     {
-        _mediator = mediator;
-        _mapper = mapper;
     }
 
-
-    [HttpPost()]
+    [HttpPost(Name = "CreateCart")]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status500InternalServerError)]
@@ -40,7 +34,7 @@ public class CartsController : BaseController
 
         await _mediator.Send(command, cancellationToken);
 
-        return Created();
+        return Created("CreateCart", request);
     }
 
     [HttpGet("branch/{branchId}")]
