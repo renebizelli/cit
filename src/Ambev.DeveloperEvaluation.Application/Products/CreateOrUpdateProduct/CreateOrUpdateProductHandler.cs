@@ -5,22 +5,22 @@ using AutoMapper;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace Ambev.DeveloperEvaluation.Application.Products.CreateProduct;
+namespace Ambev.DeveloperEvaluation.Application.Products.CreateOrUpdateProduct;
 
-public class CreateProductHandler : IRequestHandler<CreateProductCommand, CreateProductResult>
+public class CreateOrUpdateProductHandler : IRequestHandler<CreateOrUpdateProductCommand, CreateOrUpdateProductResult>
 {
     private readonly IProductRepository _productRepository;
     private readonly ICategoryRepository _categoryRepository;
     private readonly ICommandValidatorExecutor _validatorExecutor;
     private readonly IMapper _mapper;
-    private readonly ILogger<CreateProductHandler> _logger;
+    private readonly ILogger<CreateOrUpdateProductHandler> _logger;
 
-    public CreateProductHandler(
+    public CreateOrUpdateProductHandler(
         IProductRepository productRepository, 
         ICategoryRepository categoryRepository, 
         ICommandValidatorExecutor validatorExecutor, 
         IMapper mapper, 
-        ILogger<CreateProductHandler> logger)
+        ILogger<CreateOrUpdateProductHandler> logger)
     {
         _productRepository = productRepository;
         _categoryRepository = categoryRepository;
@@ -29,11 +29,11 @@ public class CreateProductHandler : IRequestHandler<CreateProductCommand, Create
         _logger = logger;
     }
 
-    public async Task<CreateProductResult> Handle(CreateProductCommand command, CancellationToken cancellationToken)
+    public async Task<CreateOrUpdateProductResult> Handle(CreateOrUpdateProductCommand command, CancellationToken cancellationToken)
     {
-        _logger.LogInformation("[CreateProduct] Start - Title {Title}", command.Title);
+        _logger.LogInformation("[CreateOrUpdateProduct] Start - Title {Title}", command.Title);
 
-        await _validatorExecutor.ValidateAsync<CreateProductCommandValidator, CreateProductCommand>(command, cancellationToken);
+        await _validatorExecutor.ValidateAsync<CreateOrUpdateProductCommandValidator, CreateOrUpdateProductCommand>(command, cancellationToken);
 
         await IsNameAlreadyUsedAsync(command.Title, cancellationToken);
 
@@ -41,9 +41,9 @@ public class CreateProductHandler : IRequestHandler<CreateProductCommand, Create
 
         var createdProduct = await _productRepository.CreateOrUpdateAsync(product, cancellationToken);
 
-        var result = _mapper.Map<CreateProductResult>(createdProduct);
+        var result = _mapper.Map<CreateOrUpdateProductResult>(createdProduct);
 
-        _logger.LogInformation("[CreateProduct] Finish - Title {Title}", command.Title);
+        _logger.LogInformation("[CreateOrUpdateProduct] Finish - Title {Title}", command.Title);
 
         return result;
     }
@@ -54,7 +54,7 @@ public class CreateProductHandler : IRequestHandler<CreateProductCommand, Create
         if (isNameAlreadyUsed) throw new InvalidOperationException("##TODO isNameAlreadyUsed");
     }
 
-    private async Task<Product> ProductMappingAsync(CreateProductCommand command, CancellationToken cancellationToken)
+    private async Task<Product> ProductMappingAsync(CreateOrUpdateProductCommand command, CancellationToken cancellationToken)
     {
         var product = _mapper.Map<Product>(command);
 

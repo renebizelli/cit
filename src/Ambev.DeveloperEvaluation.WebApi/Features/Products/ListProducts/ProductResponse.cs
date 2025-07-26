@@ -15,7 +15,7 @@ public class ProductCategoryResponse
     public string Name { get; set; } = string.Empty;
 }
 
-public class CreateProductRatingResponse
+public class CreateOrUpdateProductRatingResponse
 {
     public int Count { get; set; }
     public decimal Rate { get; set; }

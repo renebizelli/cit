@@ -1,8 +1,8 @@
-﻿using Ambev.DeveloperEvaluation.Application.Products.CreateProduct;
+﻿using Ambev.DeveloperEvaluation.Application.Products.CreateOrUpdateProduct;
 using Ambev.DeveloperEvaluation.Application.Products.ListProducts;
 using Ambev.DeveloperEvaluation.WebApi.Common;
 using Ambev.DeveloperEvaluation.WebApi.Features.Carts.CreateOrUpdateCart;
-using Ambev.DeveloperEvaluation.WebApi.Features.Products.CreateProduct;
+using Ambev.DeveloperEvaluation.WebApi.Features.Products.CreateOrUpdateProduct;
 using Ambev.DeveloperEvaluation.WebApi.Features.Products.ListProducts;
 using AutoMapper;
 using MediatR;
@@ -19,18 +19,18 @@ public class ProductsController : BaseController
     {
     }
 
-    [HttpPost(Name = "CreateProduct")]
-    [ProducesResponseType(typeof(ApiResponseWithData<CreateProductResponse>), StatusCodes.Status201Created)]
-    [ProducesResponseType(typeof(ApiResponseWithData<CreateProductResponse>), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> CreateProduct([FromBody] CreateProductRequest request, CancellationToken cancellationToken)
+    [HttpPost(Name = "CreateOrUpdateProduct")]
+    [ProducesResponseType(typeof(ApiResponseWithData<CreateOrUpdateProductResponse>), StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(ApiResponseWithData<CreateOrUpdateProductResponse>), StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> CreateOrUpdateProduct([FromBody] CreateOrUpdateProductRequest request, CancellationToken cancellationToken)
     {
-        var actionResult = await ValidateAsync<CreateProductRequestValidator, CreateProductRequest>(request, cancellationToken);
+        var actionResult = await ValidateAsync<CreateOrUpdateProductRequestValidator, CreateOrUpdateProductRequest>(request, cancellationToken);
         if (actionResult != null) return actionResult;
 
-        var command = _mapper.Map<CreateProductCommand>(request);
+        var command = _mapper.Map<CreateOrUpdateProductCommand>(request);
         var response = await _mediator.Send(command, cancellationToken);
 
-        return Created("CreateProduct", request, response);
+        return Created("CreateOrUpdateProduct", request, response);
     }
 
     //[HttpPut("{id}")]

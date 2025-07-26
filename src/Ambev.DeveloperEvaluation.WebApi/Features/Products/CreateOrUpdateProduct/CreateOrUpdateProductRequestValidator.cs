@@ -1,10 +1,10 @@
 ﻿using FluentValidation;
 
-namespace Ambev.DeveloperEvaluation.WebApi.Features.Products.CreateProduct;
+namespace Ambev.DeveloperEvaluation.WebApi.Features.Products.CreateOrUpdateProduct;
 
-public class CreateProductRequestValidator : AbstractValidator<CreateProductRequest>
+public class CreateOrUpdateProductRequestValidator : AbstractValidator<CreateOrUpdateProductRequest>
 {
-    public CreateProductRequestValidator()
+    public CreateOrUpdateProductRequestValidator()
     {
         RuleFor(product => product.Title).NotEmpty().Length(10, 128).WithMessage("TODO##");
         RuleFor(product => product.Description).NotEmpty().WithMessage("TODO##");
