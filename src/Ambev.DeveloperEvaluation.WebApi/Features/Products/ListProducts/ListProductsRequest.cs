@@ -1,8 +1,8 @@
-﻿using Ambev.DeveloperEvaluation.WebApi.Common;
+﻿using Ambev.DeveloperEvaluation.WebApi.Common.ListStuffs;
 
 namespace Ambev.DeveloperEvaluation.WebApi.Features.Products.ListProducts;
 
-public class ListProductsRequest : ListOptionsRequest
+public class ListProductsRequest : ListSettingsRequest
 {
     public int CategoryId { get; set; }
     public string? Title { get; set; }

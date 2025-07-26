@@ -1,4 +1,4 @@
-﻿using Ambev.DeveloperEvaluation.WebApi.Common;
+﻿using Ambev.DeveloperEvaluation.WebApi.Common.ListStuffs;
 using FluentValidation;
 
 namespace Ambev.DeveloperEvaluation.WebApi.Features.Products.ListProducts;
@@ -7,7 +7,7 @@ public class ListProductsRequestValidator : AbstractValidator<ListProductsReques
 {
     public ListProductsRequestValidator()
     {
-        Include(new ListOptionsRequestValidator());
+        Include(new ListSettingsRequestValidator());
 
         RuleFor(request => request)
             .Must(m =>

@@ -1,5 +1,6 @@
 ﻿using Ambev.DeveloperEvaluation.Application._Shared;
-using Ambev.DeveloperEvaluation.Application.Carts._Shared;
+using Ambev.DeveloperEvaluation.Application.Categories._Services;
+using Ambev.DeveloperEvaluation.Application.Products._Services;
 using Ambev.DeveloperEvaluation.Common.Security;
 using Ambev.DeveloperEvaluation.Domain.Services;
 using Microsoft.AspNetCore.Builder;
@@ -13,7 +14,7 @@ public class ApplicationModuleInitializer : IModuleInitializer
     {
         builder.Services.AddSingleton<IPasswordHasher, BCryptPasswordHasher>();
         builder.Services.AddScoped<ICommandValidatorExecutor, CommandValidatorExecutor>();
-
-        
+        builder.Services.AddScoped<ICategoryService, CategoryService>();
+        builder.Services.AddScoped<IProductService, ProductService>();
     }
 }

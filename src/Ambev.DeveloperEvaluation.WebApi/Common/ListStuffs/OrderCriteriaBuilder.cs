@@ -1,6 +1,6 @@
-﻿namespace Ambev.DeveloperEvaluation.WebApi.Common;
+﻿namespace Ambev.DeveloperEvaluation.WebApi.Common.ListStuffs;
 
-public class OrderBuilder
+public class OrderCriteriaBuilder
 {
     public static List<(string, bool)> Build(string? order, string defaultField)
     {
@@ -14,7 +14,7 @@ public class OrderBuilder
         {
             var orderDetail = item.Trim().Split(' ');
 
-            var asc = orderDetail.Length == 1 || (orderDetail.Length == 2 && orderDetail[1].Trim().ToLower() == "asc");
+            var asc = orderDetail.Length == 1 || orderDetail.Length == 2 && orderDetail[1].Trim().ToLower() == "asc";
             result.Add((orderDetail[0].Trim(), asc));
         }
 

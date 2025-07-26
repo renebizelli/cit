@@ -76,7 +76,7 @@ public class ProductRepository : IProductRepository
         return await _collection.Find(filter).AnyAsync(cancellationToken);
     }
 
-    public async Task<(long, IList<Product>)> ListProductsAsync(IProductQueryOptions queryOptions, CancellationToken cancellationToken)
+    public async Task<(long, IList<Product>)> ListProductsAsync(IProductQuerySettings querySettings, CancellationToken cancellationToken)
     {
         var allowedOrderFields = new Dictionary<string, Expression<Func<Product, object>>>(StringComparer.OrdinalIgnoreCase)
         {
@@ -87,16 +87,16 @@ public class ProductRepository : IProductRepository
 
         var filter = Builders<Product>.Filter.Eq(e => e.Active, true);
 
-        filter = filter.ApplyWhereLike(queryOptions.Title, e => e.Title);
-        filter = filter.ApplyWhereRange(queryOptions.MinPrice, queryOptions.MaxPrice, e => e.Price);
+        filter = filter.ApplyWhereLike(querySettings.Title, e => e.Title);
+        filter = filter.ApplyWhereRange(querySettings.MinPrice, querySettings.MaxPrice, e => e.Price);
 
         var query = _collection.Find(filter);
 
         var count = await query.CountDocumentsAsync(cancellationToken);
 
         var products = await query
-                         .ApplyOrdering(queryOptions.OrderCriteria, allowedOrderFields)
-                         .ApplyPaging(queryOptions.Page, queryOptions.PageSize)
+                         .ApplyOrdering(querySettings.OrderSettings, allowedOrderFields)
+                         .ApplyPaging(querySettings.PagingSettings)
                          .ToListAsync(cancellationToken);
 
         return (count, products);

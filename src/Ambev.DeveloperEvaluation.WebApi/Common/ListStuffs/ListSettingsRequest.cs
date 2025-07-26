@@ -1,6 +1,6 @@
-﻿namespace Ambev.DeveloperEvaluation.WebApi.Common;
+﻿namespace Ambev.DeveloperEvaluation.WebApi.Common.ListStuffs;
 
-public class ListOptionsRequest
+public class ListSettingsRequest
 {
     public string? _Order { get; set; }
     public int Page { get; set; } = 1;

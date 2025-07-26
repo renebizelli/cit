@@ -1,4 +1,5 @@
-﻿using MongoDB.Bson;
+﻿using Ambev.DeveloperEvaluation.Domain.Interfaces;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using System.Linq.Expressions;
 
@@ -6,26 +7,32 @@ namespace Ambev.DeveloperEvaluation.NoSQL.MongoDB.Extensions;
 
 public static class QueryExtension
 {
-    public static IFindFluent<T, T> ApplyOrdering<T>(this IFindFluent<T, T> query, List<(string, bool)> sortCriteria, Dictionary<string, Expression<Func<T, object>>> allowedOrderFields)
+    public static IFindFluent<T, T> ApplyOrdering<T>(this IFindFluent<T, T> query, IOrderSettings orderSettings, Dictionary<string, Expression<Func<T, object>>> allowedOrderFields)
     {
-        ArgumentNullException.ThrowIfNull(sortCriteria);
+        ArgumentNullException.ThrowIfNull(orderSettings.Criteria);
 
-        if (!sortCriteria.Any()) return query;
+        if (!orderSettings.Criteria.Any()) return query;
 
-        foreach (var (field, ascending) in sortCriteria)
+        var builder = Builders<T>.Sort;
+
+        var definitions = new List<SortDefinition<T>>();
+
+        foreach (var (field, ascending) in orderSettings.Criteria)
         {
             if (!allowedOrderFields.TryGetValue(field, out var expression))
                 continue;
 
-            query = ascending ? query.SortBy(expression) : query.SortByDescending(expression);
+            definitions.Add(ascending ? builder.Ascending(expression) : builder.Descending(expression));
         }
+
+        query.Sort(builder.Combine((definitions.ToArray())));
 
         return query;
     }
 
-    public static IFindFluent<T, T> ApplyPaging<T>(this IFindFluent<T, T> query, int page, int pageSize)
+    public static IFindFluent<T, T> ApplyPaging<T>(this IFindFluent<T, T> query, IPagingSettings pagingSettings)
     {
-        return query.Skip((page - 1) * pageSize).Limit(pageSize);
+        return query.Skip((pagingSettings.Page - 1) * pagingSettings.Size).Limit(pagingSettings.Size);
     }
 
     public static FilterDefinition<T> ApplyWhereLike<T>(this FilterDefinition<T> query, string? criteria, Expression<Func<T, object>> selector)

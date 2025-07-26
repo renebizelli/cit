@@ -1,6 +1,6 @@
 ﻿namespace Ambev.DeveloperEvaluation.Domain.Interfaces;
 
-public interface ISalesQueryOptions : IQueryOptions
+public interface ISalesQueryOptions : IListSettings
 {
     Guid UserId { get; set; }
     Guid BranchId { get; set; }
