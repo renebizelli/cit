@@ -36,7 +36,7 @@ public class DeleteCartHandler : IRequestHandler<DeleteCartCommand>
 
         var sucess = await _repository.DeleteCartAsync(command, cancellationToken);
 
-        if (!sucess) throw new KeyNotFoundException($"Cart not found");
+        if (!sucess) throw new KeyNotFoundException($"##TODO: Cart not found");
 
         var cacheDeleteOptions = new CartCacheDeleteOptions(command);
 

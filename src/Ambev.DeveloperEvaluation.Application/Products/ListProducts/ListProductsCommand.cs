@@ -1,5 +1,6 @@
 ﻿using Ambev.DeveloperEvaluation.Application._Shared;
 using Ambev.DeveloperEvaluation.Application._Shared.ListStuffs;
+using Ambev.DeveloperEvaluation.Application.Products._Shared;
 using Ambev.DeveloperEvaluation.Domain.Interfaces;
 using MediatR;
 
@@ -9,6 +10,7 @@ public class ListProductsCommand : ListSettings, IRequest<PaginatedResult<Produc
 {
     public string? Category { get; set; }
     public string? Title { get; set; }
+    public string? Description { get; set; }
     public decimal MinPrice { get; set; }
     public decimal MaxPrice { get; set; }
 

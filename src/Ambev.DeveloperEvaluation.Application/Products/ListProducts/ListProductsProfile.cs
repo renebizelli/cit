@@ -1,4 +1,5 @@
 ﻿using Ambev.DeveloperEvaluation.Application._Shared;
+using Ambev.DeveloperEvaluation.Application.Products._Shared;
 using Ambev.DeveloperEvaluation.Domain.Entities;
 using AutoMapper;
 
@@ -12,7 +13,9 @@ public class ListProductsProfile : Profile
             .ForMember(f => f.TotalCount, o => o.MapFrom(m => m.TotalCount))
             .ForMember(f => f.Items, o => o.MapFrom(m => m.Products));
 
-        CreateMap<Product, ProductResult>();
+        CreateMap<Product, ProductResult>()
+            .ForMember(f => f.Rating, o => o.Ignore());
+
         CreateMap<Category, ProductCategoryResult>();
     }
 }

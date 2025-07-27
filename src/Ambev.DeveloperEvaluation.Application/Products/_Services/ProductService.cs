@@ -1,4 +1,5 @@
-﻿using Ambev.DeveloperEvaluation.Domain.Entities;
+﻿using Ambev.DeveloperEvaluation.Application.Products._Shared;
+using Ambev.DeveloperEvaluation.Domain.Entities;
 using Ambev.DeveloperEvaluation.Domain.Interfaces;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using Ambev.DeveloperEvaluation.Domain.Services;
@@ -9,14 +10,17 @@ namespace Ambev.DeveloperEvaluation.Application.Products._Services;
 public class ProductService : IProductService
 {
     private readonly IProductRepository _repository;
+    private readonly ICacheRepository _cache;
     private readonly ICategoryService _categoryService;
 
     public ProductService(
         IProductRepository repository,
-        ICategoryService categoryService)
+        ICategoryService categoryService,
+        ICacheRepository cache)
     {
         _repository = repository;
         _categoryService = categoryService;
+        _cache = cache;
     }
 
     public async Task<Product> CreateOrUpdateAsync(Product product, CancellationToken cancellationToken)
@@ -57,5 +61,35 @@ public class ProductService : IProductService
             querySettings,
             allowedOrderFields,
             cancellationToken);
+    }
+
+    public async Task<Product?> GetAsync(string productId, CancellationToken cancellationToken)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(productId, nameof(productId));
+
+        var product = await _cache.GetAsync<Product>(new ProductCacheGetOptions(productId));
+
+        if (product != null) return product;
+         
+        product = await _repository.GetAsync(productId, cancellationToken);
+
+        if (product != null)
+        {
+            await _cache.SetAsync(new ProductCacheSetOptions(productId, TimeSpan.FromMinutes(2)), product);
+        }
+
+        return product;
+    }
+
+    public async Task DeleteAsync(string productId, CancellationToken cancellationToken)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(productId, nameof(productId));
+
+        await _cache.DeleteAsync(new ProductCacheDeleteOptions(productId));
+
+        var sucess = await _repository.DeleteAsync(productId, cancellationToken);
+
+        if (!sucess) throw new KeyNotFoundException($"##TODO: Product not found");
+
     }
 }

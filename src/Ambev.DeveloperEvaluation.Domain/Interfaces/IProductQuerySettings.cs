@@ -2,8 +2,8 @@
 
 public interface IProductQuerySettings : IListSettings
 {
-    string? Category { get; set; }
     string? Title { get; set; }
+    string? Description { get; set; }
     decimal MinPrice { get; set; }
     decimal MaxPrice { get; set; }
 }

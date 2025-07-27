@@ -49,9 +49,12 @@ public class ProductRepository : IProductRepository
             Builders<Product>.Filter.Eq(e => e.Id, productId),
             Builders<Product>.Filter.Eq(e => e.Active, true));
 
-        var result = await _collection.DeleteOneAsync(filter, cancellationToken);
+        var update = Builders<Product>.Update
+                        .Set(s => s.Active, false);
 
-        return result.DeletedCount.Equals(1);
+        var result = await _collection.UpdateOneAsync(filter, update, new UpdateOptions(), cancellationToken);
+
+        return result.MatchedCount.Equals(1);
     }
 
     public async Task<Product?> GetAsync(string productId, CancellationToken cancellationToken)
@@ -81,6 +84,7 @@ public class ProductRepository : IProductRepository
         var filter = Builders<Product>.Filter.Eq(e => e.Active, true);
 
         filter = filter.ApplyWhereLike(querySettings.Title, e => e.Title);
+        filter = filter.ApplyWhereLike(querySettings.Description, e => e.Description);
         filter = filter.ApplyWhereRange(querySettings.MinPrice, querySettings.MaxPrice, e => e.Price);
 
         var query = _collection.Find(filter);

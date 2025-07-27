@@ -1,15 +1,15 @@
 ﻿using Ambev.DeveloperEvaluation.Application.Products._Shared;
-using Ambev.DeveloperEvaluation.Application.Products.CreateOrUpdateProduct;
+using Ambev.DeveloperEvaluation.Application.Products.GetProduct;
 using Ambev.DeveloperEvaluation.WebApi.Features.Products._Shared;
 using AutoMapper;
 
-namespace Ambev.DeveloperEvaluation.WebApi.Features.Products.CreateOrUpdateProduct;
+namespace Ambev.DeveloperEvaluation.WebApi.Features.Products.GetProduct;
 
-public class CreateOrUpdateProductProfile : Profile
+public class GetProductProfile : Profile
 {
-    public CreateOrUpdateProductProfile()
+    public GetProductProfile()
     {
-        CreateMap<CreateOrUpdateProductRequest, CreateOrUpdateProductCommand>();
+        CreateMap<GetProductRequest, GetProductCommand>();
         CreateMap<ProductResult, ProductResponse>();
         CreateMap<ProductCategoryResult, ProductCategoryResponse>();
         CreateMap<ProductRatingResult, ProductRatingResponse>();
