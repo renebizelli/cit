@@ -7,11 +7,12 @@ namespace Ambev.DeveloperEvaluation.NoSQL.MongoDB.Extensions;
 
 public static class QueryExtension
 {
-    public static IFindFluent<T, T> ApplyOrdering<T>(this IFindFluent<T, T> query, IOrderSettings orderSettings, Dictionary<string, Expression<Func<T, object>>> allowedOrderFields)
+    public static IFindFluent<T, T> ApplyOrdering<T>(this IFindFluent<T, T> query, IOrderSettings? orderSettings, Dictionary<string, Expression<Func<T, object>>> allowedOrderFields)
     {
-        ArgumentNullException.ThrowIfNull(orderSettings.Criteria);
-
-        if (!orderSettings.Criteria.Any()) return query;
+        if (allowedOrderFields == null ||   
+            !allowedOrderFields.Any() ||
+            orderSettings == null || 
+            !orderSettings.Criteria.Any()) return query;
 
         var builder = Builders<T>.Sort;
 
@@ -30,8 +31,10 @@ public static class QueryExtension
         return query;
     }
 
-    public static IFindFluent<T, T> ApplyPaging<T>(this IFindFluent<T, T> query, IPagingSettings pagingSettings)
+    public static IFindFluent<T, T> ApplyPaging<T>(this IFindFluent<T, T> query, IPagingSettings? pagingSettings)
     {
+        if (pagingSettings == null) return query;
+
         return query.Skip((pagingSettings.Page - 1) * pagingSettings.Size).Limit(pagingSettings.Size);
     }
 

@@ -31,11 +31,7 @@ public class CreateOrUpdateProductHandler : IRequestHandler<CreateOrUpdateProduc
 
         await _validatorExecutor.ValidateAsync<CreateOrUpdateProductCommandValidator, CreateOrUpdateProductCommand>(command, cancellationToken);
 
-        await IsNameAlreadyUsedAsync(command.Title, cancellationToken);
-
         var product = _mapper.Map<Product>(command);
-
-        await EnrichWithCategoryAsync(command.CategoryId, product, cancellationToken);
 
         var createdProduct = await _productService.CreateOrUpdateAsync(product, cancellationToken);
 
@@ -45,23 +41,4 @@ public class CreateOrUpdateProductHandler : IRequestHandler<CreateOrUpdateProduc
 
         return result;
     }
-
-    private async Task  IsNameAlreadyUsedAsync(string title, CancellationToken cancellationToken)
-    {
-        var isNameAlreadyUsed = await _productService.IsNameAlreadyUsedAsync(title.Trim(), cancellationToken);
-        if (isNameAlreadyUsed) throw new InvalidOperationException("##TODO isNameAlreadyUsed");
-    }
-
-    private async Task EnrichWithCategoryAsync(int categoryId, Product product, CancellationToken cancellationToken)
-    {
-        await _productService.EnrichWithCategoryAsync(categoryId, product, cancellationToken);
-        
-        if (product.Category == null) throw new InvalidOperationException("##TODO isNameAlreadyUsed");
-    }
-
-
-
-
-
-
 }

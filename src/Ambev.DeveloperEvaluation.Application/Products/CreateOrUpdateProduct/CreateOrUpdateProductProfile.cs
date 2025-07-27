@@ -8,6 +8,7 @@ internal class CreateOrUpdateProductProfile : Profile
     public CreateOrUpdateProductProfile()
     {
         CreateMap<CreateOrUpdateProductCommand, Product>()
+           .ForMember(f => f.Category, o => o.MapFrom(m => new Category { Id = m.CategoryId }))
            .ForMember(f => f.Active, o => o.MapFrom(m => true));
 
         CreateMap<Product, CreateOrUpdateProductResult>()

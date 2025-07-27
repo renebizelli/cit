@@ -1,4 +1,6 @@
-﻿namespace Ambev.DeveloperEvaluation.Domain.Entities;
+﻿using Ambev.DeveloperEvaluation.Domain.Enums;
+
+namespace Ambev.DeveloperEvaluation.Domain.Entities;
 
 public class Product
 {
@@ -9,5 +11,10 @@ public class Product
     public decimal Price { get; set; }
     public string Image { get; set; } = string.Empty;
     public bool Active { get; set; }
+
+    public void Activate()
+    {
+        Active = true;
+    }
 }
 

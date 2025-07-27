@@ -1,5 +1,5 @@
 ﻿using Ambev.DeveloperEvaluation.Application._Shared;
-using Ambev.DeveloperEvaluation.Domain.Repositories;
+using Ambev.DeveloperEvaluation.Domain.Services;
 using AutoMapper;
 using MediatR;
 using Microsoft.Extensions.Logging;
@@ -8,16 +8,16 @@ namespace Ambev.DeveloperEvaluation.Application.Products.ListProducts;
 
 public class ListProductsHandler : IRequestHandler<ListProductsCommand, PaginatedResult<ProductResult>>
 {
-    private readonly IProductRepository _productRepository;
+    private readonly IProductService _productService;
     private readonly IMapper _mapper;
     private readonly ILogger<ListProductsHandler> _logger;
 
     public ListProductsHandler(
-        IProductRepository productRepository,
+        IProductService productService,
         IMapper mapper,
         ILogger<ListProductsHandler> logger)
     {
-        _productRepository = productRepository;
+        _productService = productService;
         _mapper = mapper;
         _logger = logger;
     }
@@ -26,7 +26,7 @@ public class ListProductsHandler : IRequestHandler<ListProductsCommand, Paginate
     {
         _logger.LogInformation("[ListProducts] Start");
 
-        var paginationData = await _productRepository.ListProductsAsync(request, cancellationToken);
+        var paginationData = await _productService.ListProductsAsync(request, cancellationToken);
 
         _logger.LogInformation("[ListProducts] Finish");
 

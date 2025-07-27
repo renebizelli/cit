@@ -76,15 +76,8 @@ public class ProductRepository : IProductRepository
         return await _collection.Find(filter).AnyAsync(cancellationToken);
     }
 
-    public async Task<(long, IList<Product>)> ListProductsAsync(IProductQuerySettings querySettings, CancellationToken cancellationToken)
+    public async Task<(long, IList<Product>)> ListProductsAsync(IProductQuerySettings querySettings, Dictionary<string, Expression<Func<Product, object>>> allowedOrderFields, CancellationToken cancellationToken)
     {
-        var allowedOrderFields = new Dictionary<string, Expression<Func<Product, object>>>(StringComparer.OrdinalIgnoreCase)
-        {
-            ["title"] = p => p.Title,
-            ["price"] = p => p.Price,
-            ["category"] = p => p.Category!.Name,
-        };
-
         var filter = Builders<Product>.Filter.Eq(e => e.Active, true);
 
         filter = filter.ApplyWhereLike(querySettings.Title, e => e.Title);
