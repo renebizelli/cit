@@ -19,7 +19,8 @@ public class MongoDbInitialize
         ConventionRegistry.Register("Camel Case Convention", pack, t => true);
         BsonSerializer.RegisterSerializer(new GuidSerializer(GuidRepresentation.Standard));
 
-        _ = new CartMapping();
+        _ = new CartMapping(); 
+        _ = new ProductMapping();
 
         var settings = builder.Configuration.GetSection("MongoDb").Get<MongoDbSettings>();
 
