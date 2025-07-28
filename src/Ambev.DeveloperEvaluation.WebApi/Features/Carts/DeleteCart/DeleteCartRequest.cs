@@ -1,7 +1,7 @@
-﻿using Ambev.DeveloperEvaluation.WebApi.Features.Carts._Shared;
+﻿using Ambev.DeveloperEvaluation.WebApi.Features._Shared;
 
 namespace Ambev.DeveloperEvaluation.WebApi.Features.Carts.DeleteCart;
 
-public class DeleteCartRequest : CartBaseRequest
+public class DeleteCartRequest : UserBranchKeyRequest
 {
 }

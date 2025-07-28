@@ -10,8 +10,8 @@ public static class CreateOrUpdateCartHandlerTestData
     .RuleFor(u => u.BranchId, f => Guid.NewGuid())
     .RuleFor(u => u.Items, f => new List<CreateOrUpdateCartCommand.CartItem>
     {
-        new CreateOrUpdateCartCommand.CartItem { ProductId = 1, Quantity = 1 },
-        new CreateOrUpdateCartCommand.CartItem { ProductId = 2, Quantity = 1 }
+        new CreateOrUpdateCartCommand.CartItem { ProductId = "1111", Quantity = 1 },
+        new CreateOrUpdateCartCommand.CartItem { ProductId = "2222", Quantity = 1 }
     });
 
     public static CreateOrUpdateCartCommand GenerateValidCommand() => createOrUpdateCartCommandValid.Generate();
@@ -22,8 +22,8 @@ public static class CreateOrUpdateCartHandlerTestData
       .RuleFor(u => u.BranchId, f => Guid.NewGuid())
       .RuleFor(u => u.Items, f => new List<CreateOrUpdateCartCommand.CartItem>
       {
-        new CreateOrUpdateCartCommand.CartItem { ProductId = 1, Quantity = 1 },
-        new CreateOrUpdateCartCommand.CartItem { ProductId = 1, Quantity = 1 }
+        new CreateOrUpdateCartCommand.CartItem { ProductId = "1111", Quantity = 1 },
+        new CreateOrUpdateCartCommand.CartItem { ProductId = "2222", Quantity = 1 }
       });
 
     public static CreateOrUpdateCartCommand GenerateDenormalizedCommand() => createOrUpdateCartCommandDenormalized.Generate();

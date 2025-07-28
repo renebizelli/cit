@@ -1,12 +1,12 @@
 using Ambev.DeveloperEvaluation.Domain.Entities;
 
-namespace Ambev.DeveloperEvaluation.Domain.Events
+namespace Ambev.DeveloperEvaluation.Domain.Messages
 {
-    public class UserRegisteredEvent
+    public class UserRegistered
     {
         public User User { get; }
 
-        public UserRegisteredEvent(User user)
+        public UserRegistered(User user)
         {
             User = user;
         }

@@ -36,7 +36,6 @@ public class SaleMapping
         {
             map.MapProperty(p => p.Product).SetElementName("product");
             map.MapProperty(p => p.Quantity).SetElementName("quantity");
-            map.MapProperty(p => p.Price).SetElementName("price");
             map.MapProperty(p => p.Discount).SetElementName("discount");
             map.MapProperty(p => p.Status).SetElementName("Status");
             map.MapProperty(p => p.TotalPrice).SetElementName("total");
@@ -45,7 +44,8 @@ public class SaleMapping
         BsonClassMap.RegisterClassMap<SaleProduct>(map =>
         {
             map.MapProperty(p => p.Id).SetElementName("id");
-            map.MapProperty(p => p.Name).SetElementName("name");
+            map.MapProperty(p => p.Title).SetElementName("title");
+            map.MapProperty(p => p.Price).SetElementName("price");
         });
     }
 }

@@ -6,7 +6,13 @@ public class GetCartByUserResponse
 
     public class CartItem
     {
-        public int ProductId { get; set; }
+        public CartItemProduct Product { get; set; } = new();
         public int Quantity { get; set; }
+
+        public class CartItemProduct
+        {
+            public string Id { get; set; } = string.Empty;
+            public string Title { get; set; } = string.Empty;
+        }
     }
 }

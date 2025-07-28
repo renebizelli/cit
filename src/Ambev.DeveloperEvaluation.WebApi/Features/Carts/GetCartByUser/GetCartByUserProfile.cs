@@ -9,6 +9,6 @@ public class GetCartByUserProfile : Profile
     {
         CreateMap<GetCartByUserRequest, GetCartByUserCommand>();
         CreateMap<GetCartByUserResult, GetCartByUserResponse>();
-        CreateMap<GetCartByUserResult.CartItem, GetCartByUserResponse.CartItem>();
+        CreateMap<GetCartByUserResult.CartItem.CartItemProduct, GetCartByUserResponse.CartItem.CartItemProduct>();
     }
 }
