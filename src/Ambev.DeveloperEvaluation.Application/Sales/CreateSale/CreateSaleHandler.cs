@@ -1,6 +1,4 @@
-﻿using Ambev.DeveloperEvaluation.Application.Sales._Services;
-using Ambev.DeveloperEvaluation.Application.Sales._Shared.Results;
-using Ambev.DeveloperEvaluation.Domain.Entities;
+﻿using Ambev.DeveloperEvaluation.Application.Sales._Shared;
 using Ambev.DeveloperEvaluation.Domain.Services;
 using AutoMapper;
 using MediatR;
@@ -36,18 +34,10 @@ public class CreateSaleHandler : IRequestHandler<CreateSaleCommand, SaleResult>
 
         var sale = await _saleService.CreateAsync(command, cancellationToken);
 
-        //await _saleRepository.CreateSaleAsync(sale, cancellationToken);
-
-        //await _cartRepository.DeleteCart(filter, cancellationToken);
-
-        //await _bus.Send(new SaleCreatedEvent(sale.Id));
-
-        //sale = await _saleRepository.GetAsync(sale.Id, cancellationToken);
-
-        //var result = _mapper.Map<SaleResult>(sale);
+        var result = _mapper.Map<SaleResult>(sale);
 
         _logger.LogInformation("[CreateSale] Finish - UserId {UserId}, BranchId {BranchId}", command.UserId, command.BranchId);
 
-        return null;
+        return result;
     }
 }

@@ -28,17 +28,16 @@ public class SaleResponse
 
     public class SaleItemResponse
     {
-        public int Id { get; set; }
         public ProductResponse Product { get; set; } = new();
         public int Quantity { get; set; }
-        public decimal Price { get; set; }
         public decimal Discount { get; set; }
-        public decimal TotalPrice { get { return Price * Quantity - Discount; } }
+        public decimal TotalPrice { get; set; }
 
         public class ProductResponse
         {
-            public int Id { get; set; }
+            public string Id { get; set; } = string.Empty;
             public string Title { get; set; } = string.Empty;
+            public decimal Price { get; set; }
         }
 
     }

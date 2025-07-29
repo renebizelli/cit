@@ -15,6 +15,7 @@ public class SaleMapping
             map.MapProperty(p => p.Branch).SetElementName("branch");
             map.MapProperty(p => p.User).SetElementName("user");
             map.MapProperty(p => p.TotalAmount).SetElementName("total");
+            map.MapProperty(p => p.Status).SetElementName("status");
             map.MapProperty(p => p.CreatedAt).SetElementName("create");
             map.MapProperty(p => p.Items).SetElementName("items");
         });

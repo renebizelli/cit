@@ -1,11 +1,10 @@
-﻿using Ambev.DeveloperEvaluation.Domain.Entities;
-using Ambev.DeveloperEvaluation.Domain.Enums;
+﻿using Ambev.DeveloperEvaluation.Application.Sales.GetSale;
+using Ambev.DeveloperEvaluation.Domain.Entities;
 using Ambev.DeveloperEvaluation.Domain.Interfaces;
 using Ambev.DeveloperEvaluation.Domain.Messages;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using Ambev.DeveloperEvaluation.Domain.Services;
 using Ambev.DeveloperEvaluation.Domain.Specifications;
-using static Ambev.DeveloperEvaluation.Domain.Entities.Sale;
 
 namespace Ambev.DeveloperEvaluation.Application.Sales._Services;
 
@@ -106,6 +105,13 @@ public class SaleService : ISaleService
 
         }
 
+        return sale;
+    }
+
+    public async Task<Sale> GetAsync(string id, long saleNumber, CancellationToken cancellationToken = default)
+    {
+        var sale = await _saleRepository.GetAsync(id, saleNumber, cancellationToken);
+        if (sale == null) throw new DomainException("##TODO: Sale not found");
         return sale;
     }
 }

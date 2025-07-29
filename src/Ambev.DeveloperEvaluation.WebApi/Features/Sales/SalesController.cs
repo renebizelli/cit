@@ -1,8 +1,10 @@
 ﻿using Ambev.DeveloperEvaluation.Application.Sales.CreateSale;
+using Ambev.DeveloperEvaluation.Application.Sales.GetSale;
 using Ambev.DeveloperEvaluation.WebApi.Common;
 using Ambev.DeveloperEvaluation.WebApi.Features.Carts.CreateOrUpdateCart;
 using Ambev.DeveloperEvaluation.WebApi.Features.Sales._Shared.Responses;
 using Ambev.DeveloperEvaluation.WebApi.Features.Sales.CreateSale;
+using Ambev.DeveloperEvaluation.WebApi.Features.Sales.GetSale;
 using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -33,31 +35,28 @@ public class SalesController : BaseController
 
         var result = await _mediator.Send(command, cancellationToken);
 
-        var response = _mapper.Map<SaleResponse>(result);
+        var response = _mapper.Map<SaleDetailResponse>(result);
 
         return Ok(response);
     }
 
-    //[Authorize(Roles = "Admin")]
-    //[HttpGet("{saleId}")]
-    //[ProducesResponseType(typeof(ApiResponse), StatusCodes.Status201Created)]
-    //[ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
-    //public async Task<IActionResult> GetSale([FromRoute] GetSaleRequest request, CancellationToken cancellationToken)
-    //{
-    //    var validator = new GetSaleRequestValidator();
-    //    var validationResult = await validator.ValidateAsync(request, cancellationToken);
+    [HttpGet("{value}", Name = "GetSaleRequest")]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetSale([FromRoute] GetSaleRequest request, CancellationToken cancellationToken)
+    {
+        var actionResult = await ValidateAsync<GetSaleRequestValidator, GetSaleRequest>(request, cancellationToken);
+        if (actionResult != null) return actionResult;
 
-    //    if (!validationResult.IsValid)
-    //        return BadRequest(validationResult.Errors);
+        var command = _mapper.Map<GetSaleCommand>(request);
 
-    //    var command = _mapper.Map<GetSaleCommand>(request);
+        var result = await _mediator.Send(command, cancellationToken);
 
-    //    var result = await _mediator.Send(command, cancellationToken);
+        var response = _mapper.Map<SaleDetailResponse>(result);
 
-    //    var response = _mapper.Map<SaleDetailResponse>(result);
-
-    //    return Ok(response);
-    //}
+        return Ok(response);
+    }
 
     //[Authorize(Roles = "Admin")]
     //[HttpGet()]

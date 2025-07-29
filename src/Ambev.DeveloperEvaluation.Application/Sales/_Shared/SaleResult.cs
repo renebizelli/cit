@@ -1,6 +1,6 @@
 ﻿using Ambev.DeveloperEvaluation.Domain.Enums;
 
-namespace Ambev.DeveloperEvaluation.Application.Sales._Shared.Results;
+namespace Ambev.DeveloperEvaluation.Application.Sales._Shared;
 
 public class SaleResult
 {
@@ -27,18 +27,17 @@ public class SaleResult
 
     public class SaleItemResult
     {
-        public int Id { get; set; }
         public ProductResult Product { get; set; } = new();
         public int Quantity { get; set; }
-        public decimal Price { get; set; }
         public decimal Discount { get; set; }
         public SaleItemStatus Status { get; set; }
-        public decimal TotalPrice { get { return Price * Quantity - Discount; } }
+        public decimal TotalPrice { get; set; }
 
         public class ProductResult
         {
-            public int Id { get; set; }
+            public string Id { get; set; } = string.Empty;
             public string Title { get; set; } = string.Empty;
+            public decimal Price { get; set; }
         }
     }
 

@@ -1,4 +1,4 @@
-﻿using Ambev.DeveloperEvaluation.Application.Sales._Shared.Results;
+﻿using Ambev.DeveloperEvaluation.Application.Sales._Shared;
 using Ambev.DeveloperEvaluation.WebApi.Features.Sales._Shared.Responses;
 using AutoMapper;
 
