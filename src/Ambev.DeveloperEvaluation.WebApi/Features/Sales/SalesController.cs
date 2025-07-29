@@ -4,7 +4,6 @@ using Ambev.DeveloperEvaluation.Application.Sales.CreateSale;
 using Ambev.DeveloperEvaluation.Application.Sales.GetSale;
 using Ambev.DeveloperEvaluation.Application.Sales.ListSales;
 using Ambev.DeveloperEvaluation.WebApi.Common;
-using Ambev.DeveloperEvaluation.WebApi.Features.Carts.CreateOrUpdateCart;
 using Ambev.DeveloperEvaluation.WebApi.Features.Sales._Shared.Responses;
 using Ambev.DeveloperEvaluation.WebApi.Features.Sales.CancelSale;
 using Ambev.DeveloperEvaluation.WebApi.Features.Sales.CancelSaleItem;
@@ -18,7 +17,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Ambev.DeveloperEvaluation.WebApi.Features.Sales;
 
-//[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class SalesController : BaseController
@@ -27,6 +25,7 @@ public class SalesController : BaseController
     {
     }
 
+    [Authorize]
     [HttpPost(Name = "CreateSale")]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
@@ -46,6 +45,7 @@ public class SalesController : BaseController
         return Ok(response);
     }
 
+    [Authorize]
     [HttpGet("{value}", Name = "GetSaleRequest")]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
@@ -64,7 +64,7 @@ public class SalesController : BaseController
         return Ok(response);
     }
 
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin,Manager")]
     [HttpGet(Name = "ListSales")]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
@@ -84,7 +84,7 @@ public class SalesController : BaseController
         return OkPaginated(paginatedList);
     }
 
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Manager")]
     [HttpDelete("{id}")]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
@@ -102,7 +102,7 @@ public class SalesController : BaseController
         return NoContent();
     }
 
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Manager")]
     [HttpDelete("{saleId}/items/{saleItemId}")]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]

@@ -10,6 +10,7 @@ using Ambev.DeveloperEvaluation.WebApi.Features.Users.GetUser;
 using Ambev.DeveloperEvaluation.WebApi.Features.Users.ListUsers;
 using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Ambev.DeveloperEvaluation.WebApi.Features.Users;
@@ -53,6 +54,7 @@ public class UsersController : BaseController
     /// <param name="id">The unique identifier of the user</param>
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>The user details if found</returns>
+    [Authorize(Roles = "Admin,Manager")]
     [HttpGet("{id}")]
     [ProducesResponseType(typeof(ApiResponseWithData<UserResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
@@ -70,7 +72,8 @@ public class UsersController : BaseController
         return Ok(response);
     }
 
-    [HttpGet()]
+    [Authorize(Roles = "Admin,Manager")]
+    [HttpGet(Name = "ListUsers")]
     [ProducesResponseType(typeof(ApiResponseWithData<UserResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
@@ -96,6 +99,7 @@ public class UsersController : BaseController
     /// <param name="id">The unique identifier of the user to delete</param>
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>Success response if the user was deleted</returns>
+    [Authorize(Roles = "Admin,Manager")]
     [HttpDelete("{id}")]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]

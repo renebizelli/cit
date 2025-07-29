@@ -8,10 +8,12 @@ using Ambev.DeveloperEvaluation.WebApi.Features.Carts.DeleteCart;
 using Ambev.DeveloperEvaluation.WebApi.Features.Carts.GetCartByUser;
 using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Ambev.DeveloperEvaluation.WebApi.Features.Carts;
 
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class CartsController : BaseController
