@@ -1,4 +1,6 @@
 using Ambev.DeveloperEvaluation.Domain.Entities;
+using Ambev.DeveloperEvaluation.Domain.Interfaces;
+using System.Linq.Expressions;
 
 namespace Ambev.DeveloperEvaluation.Domain.Repositories;
 
@@ -38,4 +40,7 @@ public interface IUserRepository
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>True if the user was deleted, false if not found</returns>
     Task<bool> DeleteAsync(Guid id, CancellationToken cancellationToken = default);
+
+    Task<(int, IList<User>)> ListUsersAsync(IUserQuerySettings querySettings, Dictionary<string, Expression<Func<User, object>>> allowedOrderFields, CancellationToken cancellationToken);
+
 }

@@ -34,32 +34,11 @@ public class ProductsController : BaseController
         if (actionResult != null) return actionResult;
 
         var command = _mapper.Map<CreateOrUpdateProductCommand>(request);
-        var response = await _mediator.Send(command, cancellationToken);
+        var result = await _mediator.Send(command, cancellationToken);
+        var response = _mapper.Map<ProductResponse>(result);
 
         return Created("CreateOrUpdateProduct", request, response);
     }
-
-    //[HttpPut("{id}")]
-    //[ProducesResponseType(typeof(ApiResponseWithData<UpdateProductResponse>), StatusCodes.Status200OK)]
-    //[ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
-    //[ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
-    //public async Task<IActionResult> UpdateProduct([FromRoute] int id, [FromBody] UpdateProductRequest request, CancellationToken cancellationToken)
-    //{
-    //    request.Id = id;
-
-    //    var validator = new UpdateProductRequestValidator();
-    //    var validationResult = await validator.ValidateAsync(request, cancellationToken);
-
-    //    if (!validationResult.IsValid)
-    //        return BadRequest(validationResult.Errors);
-
-    //    var command = _mapper.Map<UpdateProductCommand>(request);
-    //    var response = await _mediator.Send(command, cancellationToken);
-
-    //    var data = _mapper.Map<UpdateProductResponse>(response);
-
-    //    return Ok(data);
-    //}
 
     [HttpDelete("{id}", Name = "DeleteProduct")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -88,9 +67,9 @@ public class ProductsController : BaseController
 
         var command = _mapper.Map<ListProductsCommand>(request);
 
-        var response = await _mediator.Send(command, cancellationToken);
+        var result = await _mediator.Send(command, cancellationToken);
 
-        var data = _mapper.Map<Paginated<ProductResponse>>(response);
+        var data = _mapper.Map<Paginated<ProductResponse>>(result);
 
         var paginatedList = new PaginatedList<ProductResponse>(data.Items, data.TotalCount, request.Page, request.PageSize);
 
@@ -108,10 +87,10 @@ public class ProductsController : BaseController
 
         var command = _mapper.Map<GetProductCommand>(request);
 
-        var response = await _mediator.Send(command, cancellationToken);
+        var result = await _mediator.Send(command, cancellationToken);
 
-        var result = _mapper.Map<ProductResult>(response);
+        var response = _mapper.Map<ProductResponse>(result);
 
-        return Ok(result);
+        return Ok(response);
     }
 }

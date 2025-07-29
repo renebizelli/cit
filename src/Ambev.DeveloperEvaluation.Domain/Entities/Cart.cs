@@ -1,6 +1,8 @@
-﻿namespace Ambev.DeveloperEvaluation.Domain.Entities;
+﻿using Ambev.DeveloperEvaluation.Domain.Interfaces;
 
-public class Cart
+namespace Ambev.DeveloperEvaluation.Domain.Entities;
+
+public class Cart : IUserBranchKey
 {
     public string Id { get; set; } = string.Empty;
     public Guid UserId { get; set; }
@@ -8,10 +10,18 @@ public class Cart
     public DateTime UpdatedAt { get; set; }
 
     public ICollection<CartItem> Items { get; set; } = [];
+
+    public Cart() {}
+    public Cart(IUserBranchKey userBranchKey)
+    {
+        UserId = userBranchKey.UserId;
+        BranchId = userBranchKey.BranchId;
+        UpdatedAt = DateTime.UtcNow;
+    }
 }
 
 public class CartItem
 {
-    public int ProductId { get; set; }
     public int Quantity { get; set; }
+    public string ProductId { get; set; } = string.Empty;
 }

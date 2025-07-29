@@ -42,7 +42,7 @@ public class ProductRepository : IProductRepository
         return product;
     }
 
-    public async Task<bool> DeleteAsync(string productId, CancellationToken cancellationToken)
+    public async Task<long> DeleteAsync(string productId, CancellationToken cancellationToken)
     {
         var filter =
             Builders<Product>.Filter.And(
@@ -54,7 +54,7 @@ public class ProductRepository : IProductRepository
 
         var result = await _collection.UpdateOneAsync(filter, update, new UpdateOptions(), cancellationToken);
 
-        return result.MatchedCount.Equals(1);
+        return result.ModifiedCount;
     }
 
     public async Task<Product?> GetAsync(string productId, CancellationToken cancellationToken)

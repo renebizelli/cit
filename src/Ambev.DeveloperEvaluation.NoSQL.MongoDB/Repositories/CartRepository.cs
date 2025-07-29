@@ -1,5 +1,5 @@
-﻿using Ambev.DeveloperEvaluation.Domain.Common;
-using Ambev.DeveloperEvaluation.Domain.Entities;
+﻿using Ambev.DeveloperEvaluation.Domain.Entities;
+using Ambev.DeveloperEvaluation.Domain.Interfaces;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using MongoDB.Bson;
 using MongoDB.Driver;
@@ -32,7 +32,7 @@ public class CartRepository : ICartRepository
         await _collection.UpdateOneAsync(filter, update, new UpdateOptions { IsUpsert = true }, cancellationToken);
     }
 
-    public async Task<bool> DeleteCartAsync(CartKey cartKey, CancellationToken cancellationToken = default)
+    public async Task<long> DeleteCartAsync(IUserBranchKey cartKey, CancellationToken cancellationToken = default)
     {
         var filter =
             Builders<Cart>.Filter.And(
@@ -41,10 +41,10 @@ public class CartRepository : ICartRepository
 
         var result = await _collection.DeleteOneAsync(filter, cancellationToken);
 
-        return result.DeletedCount.Equals(1);
+        return result.DeletedCount;
     }
 
-    public async Task<Cart?> GetCartByUserAsync(CartKey cartKey, CancellationToken cancellationToken = default)
+    public async Task<Cart?> GetCartByUserAsync(IUserBranchKey cartKey, CancellationToken cancellationToken = default)
     {
         var filter =
             Builders<Cart>.Filter.And(

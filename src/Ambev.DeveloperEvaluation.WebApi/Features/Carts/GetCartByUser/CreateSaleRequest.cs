@@ -1,7 +1,7 @@
-﻿using Ambev.DeveloperEvaluation.WebApi.Features.Carts._Shared;
+﻿using Ambev.DeveloperEvaluation.WebApi.Features._Shared;
 
 namespace Ambev.DeveloperEvaluation.WebApi.Features.Carts.GetCartByUser;
 
-public class GetCartByUserRequest : CartBaseRequest
+public class GetCartByUserRequest : UserBranchKeyRequest
 {
 }

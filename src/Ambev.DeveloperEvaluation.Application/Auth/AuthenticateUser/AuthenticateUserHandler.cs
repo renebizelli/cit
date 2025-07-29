@@ -11,15 +11,18 @@ namespace Ambev.DeveloperEvaluation.Application.Auth.AuthenticateUser
     {
         private readonly IUserRepository _userRepository;
         private readonly IPasswordHasher _passwordHasher;
+        private readonly IActiveUserSpecification _activeUserSpecification;
         private readonly IJwtTokenGenerator _jwtTokenGenerator;
 
         public AuthenticateUserHandler(
             IUserRepository userRepository,
             IPasswordHasher passwordHasher,
+            IActiveUserSpecification activeUserSpecification,
             IJwtTokenGenerator jwtTokenGenerator)
         {
             _userRepository = userRepository;
             _passwordHasher = passwordHasher;
+            _activeUserSpecification = activeUserSpecification;
             _jwtTokenGenerator = jwtTokenGenerator;
         }
 
@@ -32,8 +35,7 @@ namespace Ambev.DeveloperEvaluation.Application.Auth.AuthenticateUser
                 throw new UnauthorizedAccessException("Invalid credentials");
             }
 
-            var activeUserSpec = new ActiveUserSpecification();
-            if (!activeUserSpec.IsSatisfiedBy(user))
+            if (!_activeUserSpecification.IsSatisfiedBy(user))
             {
                 throw new UnauthorizedAccessException("User is not active");
             }

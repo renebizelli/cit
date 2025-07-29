@@ -1,4 +1,4 @@
-﻿using Ambev.DeveloperEvaluation.WebApi.Features.Carts._Shared;
+﻿using Ambev.DeveloperEvaluation.WebApi.Features._Shared;
 using FluentValidation;
 
 namespace Ambev.DeveloperEvaluation.WebApi.Features.Carts.GetCartByUser;
@@ -7,6 +7,6 @@ public class GetCartByUserRequestValidator : AbstractValidator<GetCartByUserRequ
 {
     public GetCartByUserRequestValidator()
     {
-        Include(new CartBaseRequestValidator());
+        Include(new UserBranchKeyRequestValidator());
     }
 }

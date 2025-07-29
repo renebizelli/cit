@@ -8,7 +8,7 @@ public class QuantitySaleItemValidator : AbstractValidator<int>
     public QuantitySaleItemValidator()
     {
         RuleFor(item => item).Must(v => {
-            var spec = new QuantitySaleItemSpecification();
+            var spec = new SaleItemQuantityWithinRangeSpecification();
             return spec.IsSatisfiedBy(v);
         });
     }

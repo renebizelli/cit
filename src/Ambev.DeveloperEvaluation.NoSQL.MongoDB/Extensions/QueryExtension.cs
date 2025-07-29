@@ -64,6 +64,16 @@ public static class QueryExtension
         return query &= filter;
     }
 
+    public static FilterDefinition<T> ApplyWhereIfNotEmpty<T, TType>(this FilterDefinition<T> query, TType value, Expression<Func<T, object>> selector)
+    { 
+        if(value is not null && !value.Equals(default(TType)))
+        {
+            return query &= Builders<T>.Filter.Eq(selector, value);
+        }
+
+        return query;
+    }
+
     public static FilterDefinition<T> ApplyWhereRange<T>(this FilterDefinition<T> query, decimal minValue, decimal maxValue, Expression<Func<T, decimal>> selector)
     {
         if (minValue > 0)
@@ -73,6 +83,22 @@ public static class QueryExtension
 
         if (maxValue > 0)
         {
+            query &= Builders<T>.Filter.Lte(selector, maxValue);
+        }
+
+        return query;
+    }
+
+    public static FilterDefinition<T> ApplyWhereRange<T>(this FilterDefinition<T> query, DateTime minValue, DateTime maxValue, Expression<Func<T, DateTime>> selector)
+    {
+        if (!minValue.Equals(default(DateTime)))
+        {
+            query &= Builders<T>.Filter.Gte(selector, minValue);
+        }
+
+        if (!maxValue.Equals(default(DateTime)))
+        {
+            maxValue= maxValue.AddDays(1).AddTicks(-1); // Include the entire day
             query &= Builders<T>.Filter.Lte(selector, maxValue);
         }
 

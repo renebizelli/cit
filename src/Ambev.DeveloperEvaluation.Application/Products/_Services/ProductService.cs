@@ -87,9 +87,9 @@ public class ProductService : IProductService
 
         await _cache.DeleteAsync(new ProductCacheDeleteOptions(productId));
 
-        var sucess = await _repository.DeleteAsync(productId, cancellationToken);
+        var count = await _repository.DeleteAsync(productId, cancellationToken);
 
-        if (!sucess) throw new KeyNotFoundException($"##TODO: Product not found");
+        if (count.Equals(0)) throw new KeyNotFoundException($"##TODO: Product not found");
 
     }
 }

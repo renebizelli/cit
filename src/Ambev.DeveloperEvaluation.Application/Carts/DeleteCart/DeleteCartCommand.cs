@@ -1,8 +1,8 @@
-﻿using Ambev.DeveloperEvaluation.Domain.Common;
+﻿using Ambev.DeveloperEvaluation.Application._Shared;
 using MediatR;
 
 namespace Ambev.DeveloperEvaluation.Application.Carts.DeleteCart;
 
-public class DeleteCartCommand : CartKey, IRequest
+public class DeleteCartCommand : UserBranchKey, IRequest
 {
 }

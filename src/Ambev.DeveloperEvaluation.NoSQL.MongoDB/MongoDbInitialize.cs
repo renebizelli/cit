@@ -21,6 +21,8 @@ public class MongoDbInitialize
 
         _ = new CartMapping(); 
         _ = new ProductMapping();
+        _ = new SaleMapping();
+        _ = new CounterMapping();
 
         var settings = builder.Configuration.GetSection("MongoDb").Get<MongoDbSettings>();
 

@@ -81,7 +81,7 @@ public class CreateOrUpdateCartCommandValidatorTest
     public async Task Invalid_Product_Id_Thrown_ValidationException()
     {
         var command = CreateOrUpdateCartHandlerTestData.GenerateValidCommand();
-        command.Items.First().ProductId = 0;
+        command.Items.First().ProductId = string.Empty;
 
         var act = async () => await _validatorExecutor.ValidateAsync<CreateOrUpdateCartCommandValidator, CreateOrUpdateCartCommand>(command, CancellationToken.None);
 

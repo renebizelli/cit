@@ -2,6 +2,7 @@
 using Ambev.DeveloperEvaluation.Application.Carts.DeleteCart;
 using Ambev.DeveloperEvaluation.Application.Carts.GetCartByUser;
 using Ambev.DeveloperEvaluation.WebApi.Common;
+using Ambev.DeveloperEvaluation.WebApi.Features.Carts._Shared;
 using Ambev.DeveloperEvaluation.WebApi.Features.Carts.CreateOrUpdateCart;
 using Ambev.DeveloperEvaluation.WebApi.Features.Carts.DeleteCart;
 using Ambev.DeveloperEvaluation.WebApi.Features.Carts.GetCartByUser;
@@ -32,13 +33,15 @@ public class CartsController : BaseController
 
         var command = _mapper.Map<CreateOrUpdateCartCommand>(request);
 
-        await _mediator.Send(command, cancellationToken);
+        var result = await _mediator.Send(command, cancellationToken);
 
-        return Created("CreateCart", request);
+        var response = _mapper.Map<CartResponse>(result);
+
+        return Created("CreateCart", response);
     }
 
     [HttpGet("branch/{branchId}")]
-    [ProducesResponseType(typeof(ApiResponseWithData<GetCartByUserResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponseWithData<CartResponse>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetCart([FromRoute] GetCartByUserRequest request, CancellationToken cancellationToken)
     {
         request.UserId = GetCurrentUserId();
@@ -50,7 +53,7 @@ public class CartsController : BaseController
 
         var response = await _mediator.Send(command, cancellationToken);
 
-        var result = _mapper.Map<GetCartByUserResponse>(response);
+        var result = _mapper.Map<CartResponse>(response);
 
         return Ok(result);
     }
