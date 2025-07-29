@@ -1,0 +1,655 @@
+{
+	"info": {
+		"_postman_id": "59efca4d-2434-4c6f-a1ba-35cc3bcb6116",
+		"name": "CIT",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "2229942",
+		"_collection_link": "https://dark-meadow-454625.postman.co/workspace/Estudos~e60a33d1-9410-4194-b78b-4a36cd870465/collection/2229942-59efca4d-2434-4c6f-a1ba-35cc3bcb6116?action=share&source=collection_link&creator=2229942"
+	},
+	"item": [
+		{
+			"name": "users",
+			"item": [
+				{
+					"name": "/users",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"Admin\",\r\n    \"email\": \"admin@teste.com\",\r\n    \"password\": \"Rene!123\",\r\n    \"phone\": \"1198765431\",\r\n    \"status\": 1,\r\n    \"role\": 2,\r\n    \"address\": {\r\n        \"city\": \"São Paulo\",\r\n        \"state\": \"SP\",\r\n        \"street\": \"Rua teste de endereço\",\r\n        \"number\": \"123a\",\r\n        \"zipcode\": \"03164458\",\r\n        \"geo\": {\r\n            \"lat\": \"10\",\r\n            \"long\": \"20\"\r\n        }\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/users",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/users/09403bf6-1e19-40da-9b14-12db72a7465b",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"users",
+								"09403bf6-1e19-40da-9b14-12db72a7465b"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/users",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/users",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/auth",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"let d = pm.response.json();\r",
+									"pm.environment.set(\"access_token\",  d.data.token);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\" : \"admin@teste.com\",\r\n    \"password\" : \"Rene!123\"\r\n}  ",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/auth",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"auth"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "carts",
+			"item": [
+				{
+					"name": "/carts",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"branchId\" : \"4c1a10c2-3f2f-4a5c-ae47-83a17fcb87cb\",\r\n    \"items\" : [\r\n        { \r\n            \"productId\" : \"6889471b3f322b1ef03b2c58\",\r\n            \"quantity\": 11\r\n        },\r\n        {\r\n            \"productId\" : \"6889472c3f322b1ef03b2c59\",\r\n            \"quantity\" : 12\r\n        },\r\n        {\r\n            \"productId\" : \"688947803f322b1ef03b2c5c\",\r\n            \"quantity\" : 2\r\n        }\r\n    ]\r\n}  ",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/carts/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"carts",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/carts",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\" : \"rene@rene.com\",\r\n    \"password\" : \"Rene!123\"\r\n}  "
+						},
+						"url": {
+							"raw": "{{url}}/carts/branch/4c1a10c2-3f2f-4a5c-ae47-83a17fcb87cb",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"carts",
+								"branch",
+								"4c1a10c2-3f2f-4a5c-ae47-83a17fcb87cb"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/carts",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"items\" : [\r\n        { \r\n            \"productId\" : 1,\r\n            \"quantity\": 1\r\n        },\r\n               { \r\n            \"productId\" : 2,\r\n            \"quantity\": 13\r\n        }\r\n    ]\r\n}  ",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/carts/branch/4c1a10c2-3f2f-4a5c-ae47-83a17fcb87cb",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"carts",
+								"branch",
+								"4c1a10c2-3f2f-4a5c-ae47-83a17fcb87cb"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "sales",
+			"item": [
+				{
+					"name": "/sale",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"items\" : [\r\n        { \r\n            \"productId\" : 1,\r\n            \"quantity\": 1\r\n        },\r\n               { \r\n            \"productId\" : 2,\r\n            \"quantity\": 13\r\n        }\r\n    ]\r\n}  ",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/sales/68892ed171629bbd1b7f6dcd",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"sales",
+								"68892ed171629bbd1b7f6dcd"
+							],
+							"query": [
+								{
+									"key": "userid",
+									"value": "50c543a0-07f8-4c3c-a8f6-5ed407abe1d0",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/sale",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/sales/6888519d5311beaa13549840",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"sales",
+								"6888519d5311beaa13549840"
+							],
+							"query": [
+								{
+									"key": "userid",
+									"value": "50c543a0-07f8-4c3c-a8f6-5ed407abe1d0",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/sale",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"branchId\" : \"4c1a10c2-3f2f-4a5c-ae47-83a17fcb87cb\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/sales",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"sales"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/sale",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"items\" : [\r\n        { \r\n            \"productId\" : 1,\r\n            \"quantity\": 1\r\n        },\r\n               { \r\n            \"productId\" : 2,\r\n            \"quantity\": 13\r\n        }\r\n    ]\r\n}  ",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/sales/6889489c3f322b1ef03b2c5e",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"sales",
+								"6889489c3f322b1ef03b2c5e"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/saleitem",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/sales/688845e5b85d95aea837722d/items/688845e5b85d95aea8377232",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"sales",
+								"688845e5b85d95aea837722d",
+								"items",
+								"688845e5b85d95aea8377232"
+							],
+							"query": [
+								{
+									"key": "userid",
+									"value": "50c543a0-07f8-4c3c-a8f6-5ed407abe1d0",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "products",
+			"item": [
+				{
+					"name": "/products",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\" : \"rene@rene.com\",\r\n    \"password\" : \"Rene!123\"\r\n}  "
+						},
+						"url": {
+							"raw": "{{url}}/products?_order= price&page=1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"products"
+							],
+							"query": [
+								{
+									"key": "_order",
+									"value": " price"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/products",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\" : \"rene@rene.com\",\r\n    \"password\" : \"Rene!123\"\r\n}  "
+						},
+						"url": {
+							"raw": "{{url}}/products/6883c984a674c29e71e373e0",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"products",
+								"6883c984a674c29e71e373e0"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/products",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "  {\r\n    \"title\": \"Cha gelado\",\r\n    \"price\": 23.20,\r\n    \"description\": \"abc teste de cerveja\",\r\n    \"categoryId\": 2,\r\n    \"image\": \"wwww\"\r\n  }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/products",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/products",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "  {\r\n    \"title\": \"teste 2 de produtos alterado II\",\r\n    \"price\": 523.99,\r\n    \"description\": \"xzz altedado II\",\r\n    \"category\": \"Cerveja\",\r\n    \"image\": \"wwww.com\"\r\n  }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/products/19",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"products",
+								"19"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/products",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/products/6883c984a674c29e71e373e0",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"products",
+								"6883c984a674c29e71e373e0"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
