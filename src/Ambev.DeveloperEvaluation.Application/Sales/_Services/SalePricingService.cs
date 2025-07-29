@@ -20,6 +20,8 @@ public class SalePricingService : ISalePricingService
 
     public void ApplyDiscounts(Sale sale)
     {
+        sale.ResetDiscounts();
+
         if (!_allowedDiscountSpecification.IsSatisfiedBy(sale)) return;
 
         foreach (var item in sale.ActiveItems())

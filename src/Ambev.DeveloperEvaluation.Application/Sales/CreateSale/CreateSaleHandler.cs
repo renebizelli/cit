@@ -13,7 +13,6 @@ public class CreateSaleHandler : IRequestHandler<CreateSaleCommand, SaleResult>
     private readonly IMapper _mapper;
     private readonly ILogger<CreateSaleHandler> _logger;
 
-
     public CreateSaleHandler(
         ISaleService saleService,
         ICommandValidatorExecutor validatorExecutor,

@@ -11,7 +11,7 @@ public class SaleItemCancelledHandler : IHandleMessages<SaleItemCancelled>
         Console.WriteLine("SALE ITEM DELETED");
         Console.WriteLine("****************************************************");
         Console.WriteLine( message.SaleId.ToString());
-        Console.WriteLine( message.SaleItemId.ToString());
+        Console.WriteLine( message.ProdctId.ToString());
         Console.WriteLine("****************************************************");
 
         return Task.CompletedTask;

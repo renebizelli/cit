@@ -27,6 +27,7 @@ public class SaleResult
 
     public class SaleItemResult
     {
+        public string Id { get; set; } = string.Empty;
         public ProductResult Product { get; set; } = new();
         public int Quantity { get; set; }
         public decimal Discount { get; set; }

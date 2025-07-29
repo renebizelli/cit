@@ -20,7 +20,6 @@ public class SaleRepository : ISaleRepository
         return sale;
     }
 
-
     public async Task<Sale> GetAsync(string id, long saleNumber, CancellationToken cancellationToken)
     {
         var filter = Builders<Sale>.Filter.Eq(s => s.Status, Domain.Enums.SaleStatus.Active);
@@ -31,4 +30,12 @@ public class SaleRepository : ISaleRepository
 
         return await _collection.Find(filter).FirstOrDefaultAsync(cancellationToken);
     }
+
+    public async Task UpdateAsync(Sale sale, CancellationToken cancellationToken)
+    {
+        var filter = Builders<Sale>.Filter.Eq(s => s.Id, sale.Id);
+        var updateOptions = new ReplaceOptions {};
+        await _collection.ReplaceOneAsync(filter, sale, updateOptions, cancellationToken);
+    }
+
 }

@@ -112,6 +112,27 @@ public class SaleService : ISaleService
     {
         var sale = await _saleRepository.GetAsync(id, saleNumber, cancellationToken);
         if (sale == null) throw new DomainException("##TODO: Sale not found");
+
+        sale.AttachEvents();
+
         return sale;
+    }
+
+    public async Task CancelSaleItemAsync(string saleId, string saleItemId, CancellationToken cancellationToken = default)
+    {
+        var sale = await GetAsync(saleId, 0, cancellationToken);
+        if (sale == null) throw new DomainException("##TODO: Sale not found");
+
+        var item = sale.Items.FirstOrDefault(f => f.Id == saleItemId);   
+        if (item == null) throw new DomainException("##TODO: Sale Item not found");
+
+        item.Cancel();
+
+        _salePricingService.ApplyDiscounts(sale);
+
+        await _saleRepository.UpdateAsync(sale, cancellationToken);
+
+        await _messageSender.SendAsync(new SaleItemCancelled(saleId, saleItemId));
+
     }
 }

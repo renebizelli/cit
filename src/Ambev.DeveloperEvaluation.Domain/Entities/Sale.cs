@@ -29,10 +29,44 @@ public class Sale
     public void AddItem(SaleItem item)
     {
         Items.Add(item);
-
-        item.OnChanged += CalculateTotalAmount;
-
+        AttachEvents(item);
         CalculateTotalAmount();
+    }
+
+    private void AttachEvents(SaleItem item)
+    {
+        item.OnChanged += CalculateTotalAmount;
+        item.OnCancel += AutoCancelIfAllItemsCanceled;
+    }
+
+    public void AttachEvents()
+    {
+        foreach (var item in ActiveItems())
+        {
+            AttachEvents(item);
+        }
+    }
+
+    public void Cancel()
+    {
+        Status = SaleStatus.Cancelled;
+        CalculateTotalAmount();
+    }
+
+    public void AutoCancelIfAllItemsCanceled()
+    {
+        if(ActiveItems().Count.Equals(0))
+        {
+            Cancel();
+        }
+    }
+
+    public void ResetDiscounts()
+    {
+        foreach (var item in Items)
+        {
+            item.ResetDiscount();
+        }
     }
 
     public class SaleItem
@@ -56,6 +90,7 @@ public class Sale
         public decimal TotalPrice { get; private set; }
 
         public event Action? OnChanged;
+        public event Action? OnCancel;
 
         public void CalculateTotalPrice() { TotalPrice = (Product.Price * Quantity) - Discount; }
 
@@ -67,6 +102,22 @@ public class Sale
 
             OnChanged?.Invoke();
         }
+
+        public void ResetDiscount()
+        {
+            Discount = 0;
+            CalculateTotalPrice();
+            OnChanged?.Invoke();
+        }
+
+        public void Cancel()
+        {
+            if (Status == SaleItemStatus.Cancelled) return;
+            Status = SaleItemStatus.Cancelled;
+            OnChanged?.Invoke();
+            OnCancel?.Invoke();
+        }
+
     }
 
     public class SaleProduct

@@ -28,6 +28,7 @@ public class SaleResponse
 
     public class SaleItemResponse
     {
+        public string Id { get; set; } = string.Empty;
         public ProductResponse Product { get; set; } = new();
         public int Quantity { get; set; }
         public decimal Discount { get; set; }
