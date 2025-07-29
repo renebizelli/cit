@@ -31,4 +31,9 @@ public class UserService : IUserService
             allowedOrderFields,
             cancellationToken);
     }
+
+    public async Task<User?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
+    {
+        return await _userRepository.GetByIdAsync(id, cancellationToken);
+    }
 }

@@ -5,7 +5,7 @@ using AutoMapper;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace Ambev.DeveloperEvaluation.Application.Userss.ListUsers;
+namespace Ambev.DeveloperEvaluation.Application.Users.ListUsers;
 
 
 public class ListUsersHandler : IRequestHandler<ListUsersCommand, PaginatedResult<UserResult>>

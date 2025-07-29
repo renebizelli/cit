@@ -26,7 +26,7 @@ public class ProductService : IProductService
     public async Task<Product> CreateOrUpdateAsync(Product product, CancellationToken cancellationToken)
     {
         var isNameAlreadyUsed = await _repository.IsNameAlreadyUsedAsync(product.Title.Trim(), cancellationToken);
-        if (isNameAlreadyUsed) throw new InvalidOperationException("##TODO isNameAlreadyUsed");
+        if (isNameAlreadyUsed) throw new InvalidOperationException("A product with this name already exists.");
 
         await EnrichWithCategoryAsync(product, cancellationToken);
 
@@ -65,7 +65,7 @@ public class ProductService : IProductService
 
     public async Task<Product?> GetAsync(string productId, CancellationToken cancellationToken)
     {
-        ArgumentException.ThrowIfNullOrEmpty(productId, nameof(productId));
+        ArgumentNullException.ThrowIfNullOrEmpty(productId, nameof(productId));
 
         var product = await _cache.GetAsync<Product>(new ProductCacheGetOptions(productId));
 
@@ -83,13 +83,13 @@ public class ProductService : IProductService
 
     public async Task DeleteAsync(string productId, CancellationToken cancellationToken)
     {
-        ArgumentException.ThrowIfNullOrEmpty(productId, nameof(productId));
+        ArgumentNullException.ThrowIfNullOrEmpty(productId, nameof(productId));
 
         await _cache.DeleteAsync(new ProductCacheDeleteOptions(productId));
 
         var count = await _repository.DeleteAsync(productId, cancellationToken);
 
-        if (count.Equals(0)) throw new KeyNotFoundException($"##TODO: Product not found");
+        if (count.Equals(0)) throw new KeyNotFoundException($"Product not found");
 
     }
 }

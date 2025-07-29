@@ -39,4 +39,23 @@ public static class CreateUserHandlerTestData
     {
         return createUserHandlerFaker.Generate();
     }
+
+    /// <summary>
+    /// Generates an invalid User entity with hardcoded invalid data.
+    /// The generated user will have properties set to values that
+    /// intentionally violate the system's validation requirements.
+    /// </summary>
+    /// <returns>An invalid User entity with hardcoded data.</returns>
+    public static CreateUserCommand GenerateInvalidCommand()
+    {
+        return new CreateUserCommand
+        {
+            Username = "",
+            Password = "123",
+            Email = "invalid-email",
+            Phone = "123",
+            Status = UserStatus.Unknown,
+            Role = UserRole.None
+        };
+    }
 }

@@ -13,6 +13,6 @@ public class ListProductsRequestValidator : AbstractValidator<ListProductsReques
             .Must(m =>
                 ((m.MinPrice > 0 && m.MaxPrice > 0) && m.MinPrice <= m.MaxPrice) ||
                 (m.MinPrice == 0 || m.MaxPrice == 0))
-                .WithMessage("##TODO: must be zero or minPrice <= maxPrice");
+                .WithMessage("must be zero or minPrice <= maxPrice");
     }
 }

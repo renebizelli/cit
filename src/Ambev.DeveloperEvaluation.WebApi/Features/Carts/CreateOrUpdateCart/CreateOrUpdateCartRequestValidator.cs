@@ -10,7 +10,7 @@ public class CreateOrUpdateCartRequestValidator : AbstractValidator<CreateOrUpda
     {
         Include(new UserBranchKeyRequestValidator());
 
-        RuleFor(d => d.Items.Any()).NotEqual(false).WithMessage("##TODO: need to have at least one item");
+        RuleFor(d => d.Items.Any()).NotEqual(false).WithMessage("need to have at least one item");
 
         RuleForEach(d => d.Items)
             .ChildRules(item => {

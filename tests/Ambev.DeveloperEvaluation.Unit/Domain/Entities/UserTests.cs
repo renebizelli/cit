@@ -86,4 +86,21 @@ public class UserTests
         Assert.False(result.IsValid);
         Assert.NotEmpty(result.Errors);
     }
+
+    /// <summary>
+    /// Tests that when an active user is deactivated, their status changes to Inactive.
+    /// </summary>
+    [Fact(DisplayName = "User status should change to Inactive when deactivated")]
+    public void Given_ActiveUser_When_Deactivated_Then_StatusShouldBeInactive()
+    {
+        // Arrange
+        var user = UserTestData.GenerateValidUser();
+        user.Status = UserStatus.Active;
+
+        // Act
+        user.Deactivate();
+
+        // Assert
+        Assert.Equal(UserStatus.Inactive, user.Status);
+    }
 }

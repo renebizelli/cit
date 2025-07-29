@@ -20,10 +20,79 @@ namespace Ambev.DeveloperEvaluation.WebApi.Middleware
             {
                 await _next(context);
             }
+            catch (KeyNotFoundException fex)
+            {
+                await HandleKeyNotFoundExceptionAsync(context, fex);
+            }
+            catch (InvalidOperationException oex)
+            {
+                await HandleInvalidOperationExceptionAsync(context, oex);
+            }
+            catch (DomainException dex)
+            {
+                await HandleDomainExceptionAsync(context, dex);
+            }
             catch (ValidationException ex)
             {
                 await HandleValidationExceptionAsync(context, ex);
             }
+        }
+
+        private static Task HandleDomainExceptionAsync(HttpContext context, DomainException exception)
+        {
+            context.Response.ContentType = "application/json";
+            context.Response.StatusCode = StatusCodes.Status400BadRequest;
+
+            var response = new ApiResponse
+            {
+                Success = false,
+                Message = "DomainException",
+            };
+
+            var jsonOptions = new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+            };
+
+            return context.Response.WriteAsync(JsonSerializer.Serialize(response, jsonOptions));
+        }
+
+        private static Task HandleKeyNotFoundExceptionAsync(HttpContext context, KeyNotFoundException exception)
+        {
+            context.Response.ContentType = "application/json";
+            context.Response.StatusCode = StatusCodes.Status404NotFound;
+
+            var response = new ApiResponse
+            {
+                Success = false,
+                Message = "Not found",
+            };
+
+            var jsonOptions = new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+            };
+
+            return context.Response.WriteAsync(JsonSerializer.Serialize(response, jsonOptions));
+        }
+
+        private static Task HandleInvalidOperationExceptionAsync(HttpContext context, InvalidOperationException exception)
+        {
+            context.Response.ContentType = "application/json";
+            context.Response.StatusCode = StatusCodes.Status409Conflict;
+
+            var response = new ApiResponse
+            {
+                Success = false,
+                Message = "conflit",
+            };
+
+            var jsonOptions = new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+            };
+
+            return context.Response.WriteAsync(JsonSerializer.Serialize(response, jsonOptions));
         }
 
         private static Task HandleValidationExceptionAsync(HttpContext context, ValidationException exception)

@@ -5,7 +5,7 @@ using Ambev.DeveloperEvaluation.Domain.Enums;
 using Ambev.DeveloperEvaluation.Domain.Interfaces;
 using MediatR;
 
-namespace Ambev.DeveloperEvaluation.Application.Userss.ListUsers;
+namespace Ambev.DeveloperEvaluation.Application.Users.ListUsers;
 
 public class ListUsersCommand : ListSettings, IRequest<PaginatedResult<UserResult>>, IUserQuerySettings
 {

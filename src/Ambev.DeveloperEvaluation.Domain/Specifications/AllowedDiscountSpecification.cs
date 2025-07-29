@@ -8,6 +8,8 @@ public class AllowedDiscountSpecification : IAllowedDiscountSpecification
 {
     public bool IsSatisfiedBy(Sale sale)
     {
+        ArgumentNullException.ThrowIfNull(sale, nameof(sale));
+
         return sale.ActiveItems().Count() > 4;
     }
 }

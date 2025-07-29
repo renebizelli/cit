@@ -12,6 +12,7 @@ using Ambev.DeveloperEvaluation.WebApi.Features.Products.GetProduct;
 using Ambev.DeveloperEvaluation.WebApi.Features.Products.ListProducts;
 using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 
@@ -25,13 +26,14 @@ public class ProductsController : BaseController
     {
     }
 
+    [Authorize (Roles = "Admin")]
     [HttpPost(Name = "CreateOrUpdateProduct")]
     [ProducesResponseType(typeof(ApiResponseWithData<ProductResponse>), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ApiResponseWithData<ProductResponse>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateOrUpdateProduct([FromBody] CreateOrUpdateProductRequest request, CancellationToken cancellationToken)
     {
-        var actionResult = await ValidateAsync<CreateOrUpdateProductRequestValidator, CreateOrUpdateProductRequest>(request, cancellationToken);
-        if (actionResult != null) return actionResult;
+        await ValidateAsync<CreateOrUpdateProductRequestValidator, CreateOrUpdateProductRequest>(request, cancellationToken);
+        
 
         var command = _mapper.Map<CreateOrUpdateProductCommand>(request);
         var result = await _mediator.Send(command, cancellationToken);
@@ -40,14 +42,15 @@ public class ProductsController : BaseController
         return Created("CreateOrUpdateProduct", request, response);
     }
 
+    [Authorize (Roles = "Admin")]
     [HttpDelete("{id}", Name = "DeleteProduct")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DeleteProduct([FromRoute] DeleteProductRequest request, CancellationToken cancellationToken)
     {
-        var actionResult = await ValidateAsync<DeleteProductRequestValidator, DeleteProductRequest>(request, cancellationToken);
-        if (actionResult != null) return actionResult;
+        await ValidateAsync<DeleteProductRequestValidator, DeleteProductRequest>(request, cancellationToken);
+        
 
         var command = _mapper.Map<DeleteProductCommand>(request);
 
@@ -56,14 +59,15 @@ public class ProductsController : BaseController
         return NoContent();
     }
 
+    [Authorize]
     [HttpGet(Name = "ListProducts")]
     [ProducesResponseType(typeof(ApiResponseWithData<IList<ProductResponse>>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> ListProducts([FromQuery] ListProductsRequest request, CancellationToken cancellationToken)
     {
-        var actionResult = await ValidateAsync<ListProductsRequestValidator, ListProductsRequest>(request, cancellationToken);
-        if (actionResult != null) return actionResult;
+        await ValidateAsync<ListProductsRequestValidator, ListProductsRequest>(request, cancellationToken);
+        
 
         var command = _mapper.Map<ListProductsCommand>(request);
 
@@ -76,14 +80,15 @@ public class ProductsController : BaseController
         return OkPaginated(paginatedList);
     }
 
+    [Authorize]
     [HttpGet("{id}", Name = "GetProduct")]
     [ProducesResponseType(typeof(ApiResponseWithData<IList<ProductResponse>>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetProduct([FromRoute] GetProductRequest request, CancellationToken cancellationToken)
     {
-        var actionResult = await ValidateAsync<GetProductRequestValidator, GetProductRequest>(request, cancellationToken);
-        if (actionResult != null) return actionResult;
+        await ValidateAsync<GetProductRequestValidator, GetProductRequest>(request, cancellationToken);
+        
 
         var command = _mapper.Map<GetProductCommand>(request);
 

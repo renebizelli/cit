@@ -15,6 +15,6 @@ public class CategoryRepository : ICategoryRepository
 
     public async Task<Category?> GetAsync(int id, CancellationToken cancellationToken)
     {
-        return await _context.Categories.FirstOrDefaultAsync(o => o.Id == id, cancellationToken);
+        return await _context.Categories.AsNoTracking().FirstOrDefaultAsync(o => o.Id == id, cancellationToken);
     }
 }

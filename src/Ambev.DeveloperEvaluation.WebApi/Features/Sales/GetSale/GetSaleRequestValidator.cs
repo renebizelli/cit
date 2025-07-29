@@ -6,6 +6,6 @@ public class GetSaleRequestValidator : AbstractValidator<GetSaleRequest>
 {
     public GetSaleRequestValidator()
     {
-        RuleFor(f => f.Value).NotEmpty().WithMessage("##TODO: Id or Number need to be provided");
+        RuleFor(f => f.Value).NotEmpty().WithMessage("Id or Number need to be provided");
     }
 }

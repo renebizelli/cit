@@ -31,8 +31,8 @@ public class AuthController : BaseController
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> AuthenticateUser([FromBody] AuthenticateUserRequest request, CancellationToken cancellationToken)
     {
-        var actionResult = await ValidateAsync<AuthenticateUserRequestValidator, AuthenticateUserRequest>(request, cancellationToken);
-        if (actionResult != null) return actionResult;
+        await ValidateAsync<AuthenticateUserRequestValidator, AuthenticateUserRequest>(request, cancellationToken);
+        
 
         var command = _mapper.Map<AuthenticateUserCommand>(request);
         var result = await _mediator.Send(command, cancellationToken);

@@ -6,6 +6,10 @@ public interface IMinimumCartItemSpecification : ISpecification<Cart>;
 
 public class MinimumCartItemSpecification : IMinimumCartItemSpecification
 {
-    public bool IsSatisfiedBy(Cart entity)
-    => entity.Items.Any();
+    public bool IsSatisfiedBy(Cart cart)
+    {
+        ArgumentNullException.ThrowIfNull(cart, nameof(cart));  
+
+        return cart.Items.Any();
+    }
 }

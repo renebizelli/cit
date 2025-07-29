@@ -8,10 +8,12 @@ using Ambev.DeveloperEvaluation.WebApi.Features.Carts.DeleteCart;
 using Ambev.DeveloperEvaluation.WebApi.Features.Carts.GetCartByUser;
 using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Ambev.DeveloperEvaluation.WebApi.Features.Carts;
 
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class CartsController : BaseController
@@ -28,8 +30,7 @@ public class CartsController : BaseController
     {
         request.UserId = GetCurrentUserId();
 
-        var actionResult = await ValidateAsync<CreateOrUpdateCartRequestValidator, CreateOrUpdateCartRequest>(request, cancellationToken);
-        if(actionResult != null) return actionResult;
+        await ValidateAsync<CreateOrUpdateCartRequestValidator, CreateOrUpdateCartRequest>(request, cancellationToken);
 
         var command = _mapper.Map<CreateOrUpdateCartCommand>(request);
 
@@ -46,8 +47,8 @@ public class CartsController : BaseController
     {
         request.UserId = GetCurrentUserId();
 
-        var actionResult = await ValidateAsync<GetCartByUserRequestValidator, GetCartByUserRequest>(request, cancellationToken);
-        if (actionResult != null) return actionResult;
+        await ValidateAsync<GetCartByUserRequestValidator, GetCartByUserRequest>(request, cancellationToken);
+        
 
         var command = _mapper.Map<GetCartByUserCommand>(request);
 
@@ -64,8 +65,8 @@ public class CartsController : BaseController
     {
         request.UserId = GetCurrentUserId();
 
-        var actionResult = await ValidateAsync<DeleteCartRequestValidator, DeleteCartRequest>(request, cancellationToken);
-        if (actionResult != null) return actionResult;
+        await ValidateAsync<DeleteCartRequestValidator, DeleteCartRequest>(request, cancellationToken);
+        
 
         var command = _mapper.Map<DeleteCartCommand>(request);
 

@@ -67,4 +67,16 @@ public class CreateOrUpdateCartHandlerTest
         await act.Should().ThrowAsync<FluentValidation.ValidationException>();
     }
 
+    [Fact(DisplayName = "Service throws exception when creating/updating cart")]
+    public async Task Handle_ServiceThrowsException_ShouldPropagate()
+    {
+        var command = CreateOrUpdateCartHandlerTestData.GenerateValidCommand();
+        var cart = new Cart(new UserBranchKey(command.UserId, command.BranchId));
+        _mapper.Map<Cart>(command).Returns(cart);
+        _cartService.CreateOrUpdateAsync(Arg.Any<Cart>(), Arg.Any<CancellationToken>())
+            .ThrowsAsync(new Exception("Service error"));
+
+        Func<Task> act = async () => await _handler.Handle(command, CancellationToken.None);
+        await act.Should().ThrowAsync<Exception>().WithMessage("Service error");
+    }
 }

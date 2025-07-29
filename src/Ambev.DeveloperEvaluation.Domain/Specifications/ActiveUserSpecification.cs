@@ -9,6 +9,8 @@ public class ActiveUserSpecification :  IActiveUserSpecification
 {
     public bool IsSatisfiedBy(User user)
     {
+        if (user == null) return false;
+
         return user.Status == UserStatus.Active;
     }
 }

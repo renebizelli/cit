@@ -8,6 +8,6 @@ public class GetSaleCommandValidator : AbstractValidator<GetSaleCommand>
     {
         RuleFor(f => f)
             .Must(f => !string.IsNullOrEmpty(f.SaleId) || !f.SaleNumber.Equals(0))
-            .WithMessage("##TODO: Id or Number need to be provided");
+            .WithMessage("Id or Number need to be provided");
     }
 }
