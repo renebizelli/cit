@@ -18,14 +18,8 @@ public class CartMapping
 
         BsonClassMap.RegisterClassMap<CartItem>(map =>
         {
-            map.MapProperty(p => p.Product).SetElementName("product");
+            map.MapProperty(p => p.ProductId).SetElementName("product");
             map.MapProperty(p => p.Quantity).SetElementName("quantity");
-        });
-
-        BsonClassMap.RegisterClassMap<CartItem.CartItemProduct>(map =>
-        {
-            map.MapProperty(p => p.Id).SetElementName("id");
-            map.MapProperty(p => p.Title).SetElementName("title");
         });
 
     }

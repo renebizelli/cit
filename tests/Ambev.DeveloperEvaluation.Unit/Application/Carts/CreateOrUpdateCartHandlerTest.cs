@@ -40,7 +40,7 @@ public class CreateOrUpdateCartHandlerTest
         var userBranchKey = new UserBranchKey(command.UserId, command.BranchId);
         var cart = new Cart(userBranchKey);
 
-        cart.Items = command.Items.Select(s => new CartItem { Product = new CartItem.CartItemProduct { Id = s.ProductId }, Quantity = s.Quantity }).ToList();
+        cart.Items = command.Items.Select(s => new CartItem { ProductId = s.ProductId, Quantity = s.Quantity }).ToList();
 
         _mapper.Map<Cart>(command).Returns(cart);
 

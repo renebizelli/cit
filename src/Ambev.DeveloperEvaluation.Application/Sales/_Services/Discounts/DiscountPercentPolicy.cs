@@ -7,5 +7,5 @@ public class DiscountPercentPolicy(decimal percentage) : IDiscountPolicy
 {
     private readonly decimal percentage = percentage;
 
-    public decimal Apply(SaleItem item) => item.Product.Price * percentage;
+    public decimal Apply(SaleItem item) => (item.Product.Price * item.Quantity) * percentage;
 }

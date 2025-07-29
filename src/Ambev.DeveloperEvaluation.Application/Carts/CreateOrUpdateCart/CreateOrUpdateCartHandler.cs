@@ -1,4 +1,5 @@
-﻿using Ambev.DeveloperEvaluation.Domain.Entities;
+﻿using Ambev.DeveloperEvaluation.Application.Carts._Shared;
+using Ambev.DeveloperEvaluation.Domain.Entities;
 using Ambev.DeveloperEvaluation.Domain.Services;
 using AutoMapper;
 using MediatR;
@@ -6,7 +7,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Ambev.DeveloperEvaluation.Application.Carts.CreateOrUpdateCart;
 
-public class CreateOrUpdateCartHandler : IRequestHandler<CreateOrUpdateCartCommand>
+public class CreateOrUpdateCartHandler : IRequestHandler<CreateOrUpdateCartCommand, CartResult>
 {
     private readonly ICartService _cartService;
     private readonly ICommandValidatorExecutor _validatorExecutor;
@@ -25,7 +26,7 @@ public class CreateOrUpdateCartHandler : IRequestHandler<CreateOrUpdateCartComma
         _logger = logger;
     }
 
-    public async Task Handle(CreateOrUpdateCartCommand command, CancellationToken cancellationToken)
+    public async Task<CartResult> Handle(CreateOrUpdateCartCommand command, CancellationToken cancellationToken)
     {
         _logger.LogInformation("[CreateOrUpdateCart] Start - UserId {UserId}, BranchId, {BranchId}", command.UserId, command.BranchId);
 
@@ -35,8 +36,12 @@ public class CreateOrUpdateCartHandler : IRequestHandler<CreateOrUpdateCartComma
 
         var cart = _mapper.Map<Cart>(command);
 
-        await _cartService.CreateOrUpdateAsync(cart, cancellationToken);
+        cart = await _cartService.CreateOrUpdateAsync(cart, cancellationToken);
+
+        var result = _mapper.Map<CartResult>(cart);
 
         _logger.LogInformation("[CreateOrUpdateCart] Finish - UserId {UserId}, BranchId, {BranchId}", command.UserId, command.BranchId);
+
+        return result;
     }
 }

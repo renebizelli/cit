@@ -88,15 +88,16 @@ public class SaleService : ISaleService
 
         foreach (var item in cart.Items)
         {
-            var product = await _productService.GetAsync(item.Product.Id, cancellationToken);
-            if (product == null) throw new InvalidOperationException($"##TODO: Product with ID {item.Product.Id} not found.");
+            var product = await _productService.GetAsync(item.ProductId, cancellationToken);
+            if (product == null) throw new InvalidOperationException($"##TODO: Product with ID {item.ProductId} not found.");
 
             var saleItem = new Sale.SaleItem(
                 _idGenerator.Generate(),
                 new Sale.SaleProduct(product.Id, product.Title, product.Price),
                 item.Quantity);
 
-            sale.Items.Add(saleItem);
+            sale.AddItem(saleItem);
+
         }
 
         return sale;

@@ -1,11 +1,12 @@
-﻿using Ambev.DeveloperEvaluation.Domain.Services;
+﻿using Ambev.DeveloperEvaluation.Application.Carts._Shared;
+using Ambev.DeveloperEvaluation.Domain.Services;
 using AutoMapper;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
 namespace Ambev.DeveloperEvaluation.Application.Carts.GetCartByUser;
 
-public class GetCartByUserHandler : IRequestHandler<GetCartByUserCommand, GetCartByUserResult>
+public class GetCartByUserHandler : IRequestHandler<GetCartByUserCommand, CartResult>
 {
     private readonly ICartService _cartService;
     private readonly ICommandValidatorExecutor _validatorExecutor;
@@ -24,7 +25,7 @@ public class GetCartByUserHandler : IRequestHandler<GetCartByUserCommand, GetCar
         _logger = logger;
     }
 
-    public async Task<GetCartByUserResult> Handle(GetCartByUserCommand command, CancellationToken cancellationToken)
+    public async Task<CartResult> Handle(GetCartByUserCommand command, CancellationToken cancellationToken)
     {
         _logger.LogInformation("[GetCartByUser] Start - UserId {UserId}, BranchId, {BranchId}", command.UserId, command.BranchId);
 
@@ -32,7 +33,7 @@ public class GetCartByUserHandler : IRequestHandler<GetCartByUserCommand, GetCar
 
         var cart = await _cartService.GetByUserAsync(command, cancellationToken);
 
-        var result = _mapper.Map<GetCartByUserResult>(cart);
+        var result = _mapper.Map<CartResult>(cart);
 
         _logger.LogInformation("[GetCartByUser] Finish - UserId {UserId}, BranchId, {BranchId}", command.UserId, command.BranchId);
 

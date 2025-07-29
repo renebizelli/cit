@@ -1,4 +1,5 @@
 ﻿using Ambev.DeveloperEvaluation.Domain.Validation;
+using Ambev.DeveloperEvaluation.WebApi.Features._Shared;
 using FluentValidation;
 
 namespace Ambev.DeveloperEvaluation.WebApi.Features.Carts.CreateOrUpdateCart;
@@ -7,7 +8,7 @@ public class CreateOrUpdateCartRequestValidator : AbstractValidator<CreateOrUpda
 {
     public CreateOrUpdateCartRequestValidator()
     {
-        Include(new _Shared.UserBranchKeyRequestValidator());
+        Include(new UserBranchKeyRequestValidator());
 
         RuleFor(d => d.Items.Any()).NotEqual(false).WithMessage("##TODO: need to have at least one item");
 

@@ -19,11 +19,22 @@ public class Sale
     public SaleStatus Status { get; set; }
     public SaleUser? User { get; set; }
     public DateTime CreatedAt { get; set; }
-    public decimal TotalAmount { get { return CalculateTotalAmount(); } }
-    public ICollection<SaleItem> Items { get; set; } = [];
+    public decimal TotalAmount { get; private set; }
+    public List<SaleItem> Items { get; private set; } = new List<SaleItem>();
+
+    //public IReadOnlyCollection<SaleItem> ReadOnlyItems => Items.AsReadOnly();
     public ICollection<SaleItem> ActiveItems() => Items.Where(w => w.Status == SaleItemStatus.Active).ToList();
 
-    private decimal CalculateTotalAmount() => Items.Where(w => w.Status == SaleItemStatus.Active).Sum(item => item.TotalPrice);
+    private void CalculateTotalAmount() => TotalAmount = ActiveItems().Sum(item => item.TotalPrice);
+
+    public void AddItem(SaleItem item)
+    {
+        Items.Add(item);
+
+        item.OnChanged += CalculateTotalAmount;
+
+        CalculateTotalAmount();
+    }
 
     public class SaleItem
     {
@@ -34,20 +45,28 @@ public class Sale
             Quantity = quantity;
 
             Status = SaleItemStatus.Active;
+
+            CalculateTotalPrice();
         }
 
-        public string Id { get; set; }
-        public SaleProduct Product { get; set; }
-        public int Quantity { get; set; }
-        public decimal Discount { get; set; }
-        public SaleItemStatus Status { get; set; }
-        public decimal TotalPrice { get { return CalculateTotalPrice(); } }
+        public string Id { get; private set; }
+        public SaleProduct Product { get; private set; }
+        public int Quantity { get; private set; }
+        public decimal Discount { get; private set; }
+        public SaleItemStatus Status { get; private set; }
+        public decimal TotalPrice { get; private set; }
 
-        private decimal CalculateTotalPrice() => (Product.Price * Quantity) - Discount;
+        public event Action? OnChanged;
+
+        public void CalculateTotalPrice() { TotalPrice = (Product.Price * Quantity) - Discount; }
 
         public void ApplyDiscount(IDiscountPolicy policy)
         {
             Discount = policy.Apply(this);
+
+            CalculateTotalPrice();
+
+            OnChanged?.Invoke();
         }
     }
 
@@ -60,9 +79,9 @@ public class Sale
             Price = price;
         }
 
-        public string Id { get; set; } = string.Empty;
-        public string Title { get; set; } = string.Empty;
-        public decimal Price { get; set; }
+        public string Id { get; private set; } = string.Empty;
+        public string Title { get; private set; } = string.Empty;
+        public decimal Price { get; private set; }
 
     }
 

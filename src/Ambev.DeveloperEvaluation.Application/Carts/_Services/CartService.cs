@@ -22,11 +22,13 @@ public class CartService : ICartService
         _logger = logger;
     }
 
-    public async Task CreateOrUpdateAsync(Cart cart, CancellationToken cancellationToken = default)
+    public async Task<Cart> CreateOrUpdateAsync(Cart cart, CancellationToken cancellationToken = default)
     {
         await _repository.CreateOrUpdateCartAsync(cart, cancellationToken);
 
         await CachingAsync(cart, cart);
+
+        return cart;
     }
 
     public async Task DeleteAsync(IUserBranchKey userBranchKey, CancellationToken cancellationToken = default)
