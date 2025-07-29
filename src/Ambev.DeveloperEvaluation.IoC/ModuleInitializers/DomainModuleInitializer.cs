@@ -2,6 +2,7 @@
 using Ambev.DeveloperEvaluation.Application.Categories._Services;
 using Ambev.DeveloperEvaluation.Application.Products._Services;
 using Ambev.DeveloperEvaluation.Application.Sales._Services;
+using Ambev.DeveloperEvaluation.Application.Users._Services;
 using Ambev.DeveloperEvaluation.Domain.Factories;
 using Ambev.DeveloperEvaluation.Domain.Services;
 using Ambev.DeveloperEvaluation.Domain.Services.Sales.Discounts;
@@ -26,5 +27,6 @@ public class DomainModuleInitializer
         builder.Services.AddScoped<ISaleService, SaleService>();
         builder.Services.AddScoped<ICartService, CartService>();
         builder.Services.AddScoped<ISalePricingService, SalePricingService>();
+        builder.Services.AddScoped<IUserService, UserService>();
     }
 }

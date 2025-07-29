@@ -14,13 +14,13 @@ public class ListSalesRequestValidator : AbstractValidator<ListSalesRequest>
             .Must(m =>
                 ((m.MinTotalAmount > 0 && m.MaxTotalAmount > 0) && m.MinTotalAmount <= m.MaxTotalAmount) ||
                 (m.MinTotalAmount == 0 || m.MaxTotalAmount == 0))
-                .WithMessage("must be zero or minTotalPrice <= maxTotalPrice");
+                .WithMessage("##TODO: must be zero or minTotalPrice <= maxTotalPrice");
 
         RuleFor(x => x)
             .Must(x =>
                 x.MinDate.Equals(DateTime.MinValue) ||
                 x.MaxDate.Equals(DateTime.MinValue) ||
                 x.MinDate <= x.MaxDate)
-            .WithMessage("The min date must be less than or equal to the max date.");
+            .WithMessage("##TODO: The min date must be less than or equal to the max date.");
     }
 }

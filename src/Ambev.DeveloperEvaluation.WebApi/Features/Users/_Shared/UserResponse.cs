@@ -1,11 +1,11 @@
 using Ambev.DeveloperEvaluation.Domain.Enums;
 
-namespace Ambev.DeveloperEvaluation.WebApi.Features.Users.CreateUser;
+namespace Ambev.DeveloperEvaluation.WebApi.Features.Users._Shared;
 
 /// <summary>
 /// API response model for CreateUser operation
 /// </summary>
-public class CreateUserResponse
+public class UserResponse
 {
     /// <summary>
     /// The unique identifier of the created user
@@ -15,7 +15,7 @@ public class CreateUserResponse
     /// <summary>
     /// The user's full name
     /// </summary>
-    public string Name { get; set; } = string.Empty;
+    public string Username { get; set; } = string.Empty;
 
     /// <summary>
     /// The user's email address

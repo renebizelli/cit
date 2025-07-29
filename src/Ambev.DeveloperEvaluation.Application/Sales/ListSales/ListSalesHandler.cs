@@ -23,11 +23,11 @@ public class ListSalesHandler : IRequestHandler<ListSalesCommand, PaginatedResul
         _logger = logger;
     }
 
-    public async Task<PaginatedResult<SaleResult>> Handle(ListSalesCommand request, CancellationToken cancellationToken)
+    public async Task<PaginatedResult<SaleResult>> Handle(ListSalesCommand command, CancellationToken cancellationToken)
     {
         _logger.LogInformation("[ListSales] Start");
 
-        var paginationData = await _saleService.ListSalesAsync(request, cancellationToken);
+        var paginationData = await _saleService.ListSalesAsync(command, cancellationToken);
 
         _logger.LogInformation("[ListSales] Finish");
 

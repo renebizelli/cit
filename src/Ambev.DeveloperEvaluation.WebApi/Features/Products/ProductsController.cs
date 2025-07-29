@@ -34,7 +34,8 @@ public class ProductsController : BaseController
         if (actionResult != null) return actionResult;
 
         var command = _mapper.Map<CreateOrUpdateProductCommand>(request);
-        var response = await _mediator.Send(command, cancellationToken);
+        var result = await _mediator.Send(command, cancellationToken);
+        var response = _mapper.Map<ProductResponse>(result);
 
         return Created("CreateOrUpdateProduct", request, response);
     }
