@@ -2,8 +2,10 @@
 
 public interface ISalesQuerySettings : IUserBranchKey, IListSettings
 {
-    DateTime MinDate { get; set; } 
+    string City { get; set; }
+    string State { get; set; }
+    DateTime MinDate { get; set; }
     DateTime MaxDate { get; set; }
-    decimal MinTotalPrice { get; set; }
-    decimal MaxTotalPrice { get; set; }
+    decimal MinTotalAmount { get; set; }
+    decimal MaxTotalAmount { get; set; }
 }

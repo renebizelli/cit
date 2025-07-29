@@ -66,9 +66,9 @@ public class ProductsController : BaseController
 
         var command = _mapper.Map<ListProductsCommand>(request);
 
-        var response = await _mediator.Send(command, cancellationToken);
+        var result = await _mediator.Send(command, cancellationToken);
 
-        var data = _mapper.Map<Paginated<ProductResponse>>(response);
+        var data = _mapper.Map<Paginated<ProductResponse>>(result);
 
         var paginatedList = new PaginatedList<ProductResponse>(data.Items, data.TotalCount, request.Page, request.PageSize);
 
@@ -86,10 +86,10 @@ public class ProductsController : BaseController
 
         var command = _mapper.Map<GetProductCommand>(request);
 
-        var response = await _mediator.Send(command, cancellationToken);
+        var result = await _mediator.Send(command, cancellationToken);
 
-        var result = _mapper.Map<ProductResult>(response);
+        var response = _mapper.Map<ProductResponse>(result);
 
-        return Ok(result);
+        return Ok(response);
     }
 }

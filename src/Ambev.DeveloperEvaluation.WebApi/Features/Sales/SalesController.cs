@@ -2,6 +2,7 @@
 using Ambev.DeveloperEvaluation.Application.Sales.CancelSaleItem;
 using Ambev.DeveloperEvaluation.Application.Sales.CreateSale;
 using Ambev.DeveloperEvaluation.Application.Sales.GetSale;
+using Ambev.DeveloperEvaluation.Application.Sales.ListSales;
 using Ambev.DeveloperEvaluation.WebApi.Common;
 using Ambev.DeveloperEvaluation.WebApi.Features.Carts.CreateOrUpdateCart;
 using Ambev.DeveloperEvaluation.WebApi.Features.Sales._Shared.Responses;
@@ -9,6 +10,7 @@ using Ambev.DeveloperEvaluation.WebApi.Features.Sales.CancelSale;
 using Ambev.DeveloperEvaluation.WebApi.Features.Sales.CancelSaleItem;
 using Ambev.DeveloperEvaluation.WebApi.Features.Sales.CreateSale;
 using Ambev.DeveloperEvaluation.WebApi.Features.Sales.GetSale;
+using Ambev.DeveloperEvaluation.WebApi.Features.Sales.ListSales;
 using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -63,25 +65,24 @@ public class SalesController : BaseController
     }
 
     //[Authorize(Roles = "Admin")]
-    //[HttpGet()]
-    //[ProducesResponseType(typeof(ApiResponse), StatusCodes.Status201Created)]
-    //[ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
-    //public async Task<IActionResult> ListSale([FromQuery] ListSalesRequest request,  CancellationToken cancellationToken)
-    //{
-    //    var validator = new ListSalesRequestValidator();
-    //    var validationResult = await validator.ValidateAsync(request, cancellationToken);
+    [HttpGet(Name = "ListSales")]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> ListSales([FromQuery] ListSalesRequest request, CancellationToken cancellationToken)
+    {
+        var actionResult = await ValidateAsync<ListSalesRequestValidator, ListSalesRequest>(request, cancellationToken);
+        if (actionResult != null) return actionResult;
 
-    //    if (!validationResult.IsValid)
-    //        return BadRequest(validationResult.Errors);
+        var command = _mapper.Map<ListSalesCommand>(request);
 
-    //    var command = _mapper.Map<ListSalesCommand>(request);
+        var result = await _mediator.Send(command, cancellationToken);
 
-    //    var result = await _mediator.Send(command, cancellationToken);
+        var data = _mapper.Map<Paginated<SaleResponse>>(result);
 
-    //    var response = _mapper.Map<Paginated<SaleResponse>>(result);
+        var paginatedList = new PaginatedList<SaleResponse>(data.Items, data.TotalCount, request.Page, request.PageSize);
 
-    //    return Ok(response);
-    //}
+        return OkPaginated(paginatedList);
+    }
 
     //[Authorize(Roles = "Admin")]
     [HttpDelete("{id}")]

@@ -1,10 +1,10 @@
-﻿using Ambev.DeveloperEvaluation.Application.Sales.GetSale;
-using Ambev.DeveloperEvaluation.Domain.Entities;
+﻿using Ambev.DeveloperEvaluation.Domain.Entities;
 using Ambev.DeveloperEvaluation.Domain.Interfaces;
 using Ambev.DeveloperEvaluation.Domain.Messages;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using Ambev.DeveloperEvaluation.Domain.Services;
 using Ambev.DeveloperEvaluation.Domain.Specifications;
+using System.Linq.Expressions;
 
 namespace Ambev.DeveloperEvaluation.Application.Sales._Services;
 
@@ -141,5 +141,22 @@ public class SaleService : ISaleService
         if (result == 0) throw new DomainException("##TODO: Sale not found");
 
         await _messageSender.SendAsync(new SaleCancelled(saleId));
+    }
+
+    public async Task<(long, IList<Sale>)> ListSalesAsync(ISalesQuerySettings querySettings, CancellationToken cancellationToken)
+    {
+        var allowedOrderFields = new Dictionary<string, Expression<Func<Sale, object>>>(StringComparer.OrdinalIgnoreCase)
+        {
+            ["saleNumber"] = p => p.SaleNumber,
+            ["branch"] = p => p.Branch.Name,
+            ["user"] = p => p.User.Name,
+            ["createdAt"] = p => p.CreatedAt,
+            ["totalAmount"] = p => p.TotalAmount,
+        };
+
+        return await _saleRepository.ListSalesAsync(
+            querySettings,
+            allowedOrderFields,
+            cancellationToken);
     }
 }

@@ -2,10 +2,9 @@
 using Ambev.DeveloperEvaluation.Domain.Policies;
 
 namespace Ambev.DeveloperEvaluation.Domain.Entities;
-
 public class Sale
 {
-    public Sale(string id, long saleNumber, SaleBranch branch, SaleUser? user)
+    public Sale(string id, long saleNumber, SaleBranch branch, SaleUser user)
     {
         Id = id;
         SaleNumber = saleNumber;
@@ -19,10 +18,9 @@ public class Sale
     public long SaleNumber { get; private set; }
     public SaleBranch Branch { get; private set; }
     public SaleStatus Status { get; private set; }
-    public SaleUser? User { get; private set; }
+    public SaleUser User { get; private set; }
     public DateTime CreatedAt { get; private set; }
     public DateTime UpdatedAt { get; private set; }
-    
     public decimal TotalAmount { get; private set; }
     public List<SaleItem> Items { get; private set; } = new List<SaleItem>();
 

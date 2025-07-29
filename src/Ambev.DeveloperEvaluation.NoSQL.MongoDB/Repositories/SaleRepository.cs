@@ -1,7 +1,10 @@
 ﻿using Ambev.DeveloperEvaluation.Domain.Entities;
 using Ambev.DeveloperEvaluation.Domain.Enums;
+using Ambev.DeveloperEvaluation.Domain.Interfaces;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
+using Ambev.DeveloperEvaluation.NoSQL.MongoDB.Extensions;
 using MongoDB.Driver;
+using System.Linq.Expressions;
 
 namespace Ambev.DeveloperEvaluation.NoSQL.MongoDB.Repositories;
 
@@ -57,6 +60,27 @@ public class SaleRepository : ISaleRepository
         var result = await _collection.UpdateOneAsync(filter, update, new(), cancellationToken);
 
         return result.ModifiedCount;
+    }
+
+    public async Task<(long, IList<Sale>)> ListSalesAsync(ISalesQuerySettings querySettings, Dictionary<string, Expression<Func<Sale, object>>> allowedOrderFields, CancellationToken cancellationToken)
+    {
+        var filter = Builders<Sale>.Filter.Eq(e => e.Status, SaleStatus.Active);
+
+        filter = filter.ApplyWhereIfNotEmpty(querySettings.UserId, e => e.User.Id);
+        filter = filter.ApplyWhereIfNotEmpty(querySettings.BranchId, e => e.Branch.Id);
+        filter = filter.ApplyWhereRange(querySettings.MinTotalAmount, querySettings.MaxTotalAmount, e => e.TotalAmount);
+        filter = filter.ApplyWhereRange(querySettings.MinDate, querySettings.MaxDate, e => e.CreatedAt);
+
+        var query = _collection.Find(filter);
+
+        var count = await query.CountDocumentsAsync(cancellationToken);
+
+        var sales = await query
+                         .ApplyOrdering(querySettings.OrderSettings, allowedOrderFields)
+                         .ApplyPaging(querySettings.PagingSettings)
+                         .ToListAsync(cancellationToken);
+
+        return (count, sales);
     }
 
 }
