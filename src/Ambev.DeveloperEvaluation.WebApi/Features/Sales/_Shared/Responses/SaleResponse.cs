@@ -4,7 +4,8 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.Sales._Shared.Responses;
 
 public class SaleResponse
 {
-    public int Id { get; set; }
+    public string Id { get; set; } = string.Empty;
+    public long SaleNumber { get; set; }
     public BranchResponse Branch { get; set; } = new();
     public SaleStatus Status { get; set; }
     public UserResponse User { get; set; } = new();

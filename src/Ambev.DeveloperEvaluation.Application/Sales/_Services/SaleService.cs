@@ -16,10 +16,10 @@ public class SaleService : ISaleService
     private readonly IProductService _productService;
     private readonly ISalePricingService _salePricingService;
     private readonly IMessageSender _messageSender;
-    private readonly IIDGenerator _idGenerator;
+    private readonly IStringIDGenerator _stringIDGenerator;
+    private readonly ILongIDGenerator _longIDGenerator;
     private readonly IMinimumCartItemSpecification _minimumCartItem;
     private readonly ISaleItemQuantityWithinRangeSpecification _saleItemQuantityWithinRange;
-    private IMinimumCartItemSpecification? minimumCartItem;
 
     public SaleService(
         ISaleRepository saleRepository,
@@ -29,7 +29,8 @@ public class SaleService : ISaleService
         IMessageSender messageSender,
         IMinimumCartItemSpecification minimumCartItem,
         ISaleItemQuantityWithinRangeSpecification saleItemQuantityWithinRange,
-        IIDGenerator idGenerator)
+        IStringIDGenerator stringIDGenerator,
+        ILongIDGenerator longIDGenerator)
     {
         _saleRepository = saleRepository;
         _cartService = cartService;
@@ -38,7 +39,8 @@ public class SaleService : ISaleService
         _messageSender = messageSender;
         _minimumCartItem = minimumCartItem;
         _saleItemQuantityWithinRange = saleItemQuantityWithinRange;
-        _idGenerator = idGenerator;
+        _stringIDGenerator = stringIDGenerator;
+        _longIDGenerator = longIDGenerator;
     }
 
     public async Task<Sale> CreateAsync(IUserBranchKey userBranchKey, CancellationToken cancellationToken = default)
@@ -81,8 +83,12 @@ public class SaleService : ISaleService
 
     private async Task<Sale> SaleMappingAsync(Cart cart, CancellationToken cancellationToken)
     {
+        var saleNumber = await _longIDGenerator.GenerateSaleNumber(cancellationToken);
+        if (saleNumber <= 0) throw new DomainException("##TODO: Invalid sale number generated");
+
         var sale = new Sale(
-            _idGenerator.Generate(),
+            _stringIDGenerator.Generate(),
+            saleNumber,
             new Sale.SaleBranch(cart.BranchId, "TODO"),
             new Sale.SaleUser(cart.UserId, "TODO", "TODO", "TODO"));
 
@@ -92,7 +98,7 @@ public class SaleService : ISaleService
             if (product == null) throw new InvalidOperationException($"##TODO: Product with ID {item.ProductId} not found.");
 
             var saleItem = new Sale.SaleItem(
-                _idGenerator.Generate(),
+                _stringIDGenerator.Generate(),
                 new Sale.SaleProduct(product.Id, product.Title, product.Price),
                 item.Quantity);
 

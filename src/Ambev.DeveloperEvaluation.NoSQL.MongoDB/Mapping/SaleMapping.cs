@@ -11,6 +11,7 @@ public class SaleMapping
         BsonClassMap.RegisterClassMap<Sale>(map =>
         {
             map.MapIdProperty(p => p.Id);
+            map.MapProperty(p => p.SaleNumber).SetElementName("number");
             map.MapProperty(p => p.Branch).SetElementName("branch");
             map.MapProperty(p => p.User).SetElementName("user");
             map.MapProperty(p => p.TotalAmount).SetElementName("total");

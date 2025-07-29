@@ -4,7 +4,8 @@ namespace Ambev.DeveloperEvaluation.Application.Sales._Shared.Results;
 
 public class SaleResult
 {
-    public int Id { get; set; }
+    public string Id { get; set; } = string.Empty;
+    public long SaleNumber { get; set; }
     public BranchResult Branch { get; set; } = new();
     public SaleStatus Status { get; set; }
     public UserResult User { get; set; } = new();

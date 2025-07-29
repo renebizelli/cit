@@ -1,14 +1,15 @@
 ﻿using Ambev.DeveloperEvaluation.Cache.Redis;
+using Ambev.DeveloperEvaluation.Domain.Interfaces;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
+using Ambev.DeveloperEvaluation.Messaging.Rebus;
 using Ambev.DeveloperEvaluation.NoSQL.MongoDB;
 using Ambev.DeveloperEvaluation.NoSQL.MongoDB.Repositories;
+using Ambev.DeveloperEvaluation.NoSQL.MongoDB.Services;
 using Ambev.DeveloperEvaluation.ORM;
 using Ambev.DeveloperEvaluation.ORM.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Ambev.DeveloperEvaluation.Messaging.Rebus;
-using Ambev.DeveloperEvaluation.Domain.Interfaces;
 
 namespace Ambev.DeveloperEvaluation.IoC.ModuleInitializers;
 
@@ -24,7 +25,8 @@ public class InfrastructureModuleInitializer : IModuleInitializer
         builder.Services.AddScoped<ICartRepository, CartRepository>();
         builder.Services.AddScoped<ICacheRepository, RedisRepository>();
         builder.Services.AddScoped<ISaleRepository, SaleRepository>();
-        builder.Services.AddScoped<IIDGenerator, MongoDbIDGenerator>();
+        builder.Services.AddScoped<IStringIDGenerator, MongoDbStringIDGenerator>();
+        builder.Services.AddScoped<ILongIDGenerator, MongoDbLongSequenceIDGenerator>();
 
         new MongoDbInitialize().Initialize(builder);
 

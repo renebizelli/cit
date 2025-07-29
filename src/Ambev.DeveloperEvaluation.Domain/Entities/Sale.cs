@@ -5,28 +5,27 @@ namespace Ambev.DeveloperEvaluation.Domain.Entities;
 
 public class Sale
 {
-    public Sale(string id, SaleBranch branch, SaleUser? user)
+    public Sale(string id, long saleNumber, SaleBranch branch, SaleUser? user)
     {
         Id = id;
+        SaleNumber = saleNumber;
         Branch = branch;
         User = user;
         CreatedAt = DateTime.UtcNow;
         Status = SaleStatus.Active;
     }
 
-    public string Id { get; set; } = string.Empty;
-    public SaleBranch Branch { get; set; }
-    public SaleStatus Status { get; set; }
-    public SaleUser? User { get; set; }
-    public DateTime CreatedAt { get; set; }
+    public string Id { get; private set; } = string.Empty;
+    public long SaleNumber { get; private set; }
+    public SaleBranch Branch { get; private set; }
+    public SaleStatus Status { get; private set; }
+    public SaleUser? User { get; private set; }
+    public DateTime CreatedAt { get; private set; }
     public decimal TotalAmount { get; private set; }
     public List<SaleItem> Items { get; private set; } = new List<SaleItem>();
 
-    //public IReadOnlyCollection<SaleItem> ReadOnlyItems => Items.AsReadOnly();
     public ICollection<SaleItem> ActiveItems() => Items.Where(w => w.Status == SaleItemStatus.Active).ToList();
-
     private void CalculateTotalAmount() => TotalAmount = ActiveItems().Sum(item => item.TotalPrice);
-
     public void AddItem(SaleItem item)
     {
         Items.Add(item);
@@ -78,7 +77,6 @@ public class Sale
             Title = title;
             Price = price;
         }
-
         public string Id { get; private set; } = string.Empty;
         public string Title { get; private set; } = string.Empty;
         public decimal Price { get; private set; }
@@ -93,8 +91,8 @@ public class Sale
             Name = name;
         }
 
-        public Guid Id { get; set; }
-        public string Name { get; set; } = string.Empty;
+        public Guid Id { get; private set; }
+        public string Name { get; private set; } = string.Empty;
     }
 
     public class SaleUser
@@ -107,9 +105,9 @@ public class Sale
             State = state;
         }
 
-        public Guid Id { get; set; }
-        public string Name { get; set; } = string.Empty;
-        public string City { get; set; } = string.Empty;
-        public string State { get; set; } = string.Empty;
+        public Guid Id { get; private set; }
+        public string Name { get; private set; } = string.Empty;
+        public string City { get; private set; } = string.Empty;
+        public string State { get; private set; } = string.Empty;
     }
 }
