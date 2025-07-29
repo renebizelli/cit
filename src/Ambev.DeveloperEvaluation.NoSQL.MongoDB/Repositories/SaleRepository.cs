@@ -1,4 +1,5 @@
 ﻿using Ambev.DeveloperEvaluation.Domain.Entities;
+using Ambev.DeveloperEvaluation.Domain.Enums;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using MongoDB.Driver;
 
@@ -33,9 +34,29 @@ public class SaleRepository : ISaleRepository
 
     public async Task UpdateAsync(Sale sale, CancellationToken cancellationToken)
     {
-        var filter = Builders<Sale>.Filter.Eq(s => s.Id, sale.Id);
+        var filter =
+            Builders<Sale>.Filter.And(
+                Builders<Sale>.Filter.Eq(s => s.Status, SaleStatus.Active),
+                Builders<Sale>.Filter.Eq(s => s.Id, sale.Id));
+
         var updateOptions = new ReplaceOptions {};
         await _collection.ReplaceOneAsync(filter, sale, updateOptions, cancellationToken);
+    }
+
+    public async Task<long> CancelAsync(string saleId, CancellationToken cancellationToken)
+    {
+        var filter =
+            Builders<Sale>.Filter.And(
+                Builders<Sale>.Filter.Eq(s => s.Status, SaleStatus.Active),
+                Builders<Sale>.Filter.Eq(s => s.Id, saleId));
+
+        var update = Builders<Sale>.Update
+            .Set(s => s.Status, SaleStatus.Canceled)
+            .Set(s => s.UpdatedAt, DateTime.UtcNow);
+
+        var result = await _collection.UpdateOneAsync(filter, update, new(), cancellationToken);
+
+        return result.ModifiedCount;
     }
 
 }

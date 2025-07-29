@@ -7,4 +7,5 @@ public interface ISaleRepository
     Task<Sale> CreateAsync(Sale sale, CancellationToken cancellationToken);
     Task<Sale> GetAsync(string id, long saleNumber, CancellationToken cancellationToken);
     Task UpdateAsync(Sale sale, CancellationToken cancellationToken);
+    Task<long> CancelAsync(string saleId, CancellationToken cancellationToken);
 }

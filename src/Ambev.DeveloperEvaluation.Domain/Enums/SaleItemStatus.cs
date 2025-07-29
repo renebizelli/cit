@@ -2,7 +2,7 @@
 
 public enum SaleItemStatus : byte
 {
-    Cancelled = 0,
+    Canceled = 0,
     Active
 }
 

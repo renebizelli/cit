@@ -1,9 +1,11 @@
-﻿using Ambev.DeveloperEvaluation.Application.Sales.CancelSaleItem;
+﻿using Ambev.DeveloperEvaluation.Application.Sales.CancelSale;
+using Ambev.DeveloperEvaluation.Application.Sales.CancelSaleItem;
 using Ambev.DeveloperEvaluation.Application.Sales.CreateSale;
 using Ambev.DeveloperEvaluation.Application.Sales.GetSale;
 using Ambev.DeveloperEvaluation.WebApi.Common;
 using Ambev.DeveloperEvaluation.WebApi.Features.Carts.CreateOrUpdateCart;
 using Ambev.DeveloperEvaluation.WebApi.Features.Sales._Shared.Responses;
+using Ambev.DeveloperEvaluation.WebApi.Features.Sales.CancelSale;
 using Ambev.DeveloperEvaluation.WebApi.Features.Sales.CancelSaleItem;
 using Ambev.DeveloperEvaluation.WebApi.Features.Sales.CreateSale;
 using Ambev.DeveloperEvaluation.WebApi.Features.Sales.GetSale;
@@ -82,25 +84,22 @@ public class SalesController : BaseController
     //}
 
     //[Authorize(Roles = "Admin")]
-    //[HttpDelete("{id}")]
-    //[ProducesResponseType(typeof(ApiResponse), StatusCodes.Status201Created)]
-    //[ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
-    //public async Task<IActionResult> CancelSale([FromRoute] CancelSaleRequest request, CancellationToken cancellationToken)
-    //{
-    //    var validator = new CancelSaleRequestValidator();
-    //    var validationResult = await validator.ValidateAsync(request, cancellationToken);
+    [HttpDelete("{id}")]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> CancelSale([FromRoute] CancelSaleRequest request, CancellationToken cancellationToken)
+    {
+        request.UserId = GetCurrentUserId();
 
-    //    if (!validationResult.IsValid)
-    //        return BadRequest(validationResult.Errors);
+        var actionResult = await ValidateAsync<CancelSaleRequestValidator, CancelSaleRequest>(request, cancellationToken);
+        if (actionResult != null) return actionResult;
 
-    //    var command = _mapper.Map<CancelSaleCommand>(request);
+        var command = _mapper.Map<CancelSaleCommand>(request);
 
-    //    var result = await _mediator.Send(command, cancellationToken);
+        await _mediator.Send(command, cancellationToken);
 
-    //    var response = _mapper.Map<CancelSaleResponse>(result);
-
-    //    return Ok(response);
-    //}
+        return NoContent();
+    }
 
     //[Authorize(Roles = "Admin")]
     [HttpDelete("{saleId}/items/{saleItemId}")]

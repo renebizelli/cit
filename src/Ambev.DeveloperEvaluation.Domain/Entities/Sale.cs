@@ -21,6 +21,8 @@ public class Sale
     public SaleStatus Status { get; private set; }
     public SaleUser? User { get; private set; }
     public DateTime CreatedAt { get; private set; }
+    public DateTime UpdatedAt { get; private set; }
+    
     public decimal TotalAmount { get; private set; }
     public List<SaleItem> Items { get; private set; } = new List<SaleItem>();
 
@@ -49,7 +51,8 @@ public class Sale
 
     public void Cancel()
     {
-        Status = SaleStatus.Cancelled;
+        Status = SaleStatus.Canceled;
+        UpdatedAt = DateTime.UtcNow;
         CalculateTotalAmount();
     }
 
@@ -112,8 +115,8 @@ public class Sale
 
         public void Cancel()
         {
-            if (Status == SaleItemStatus.Cancelled) return;
-            Status = SaleItemStatus.Cancelled;
+            if (Status == SaleItemStatus.Canceled) return;
+            Status = SaleItemStatus.Canceled;
             OnChanged?.Invoke();
             OnCancel?.Invoke();
         }

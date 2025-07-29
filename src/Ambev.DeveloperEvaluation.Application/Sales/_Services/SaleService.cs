@@ -133,6 +133,13 @@ public class SaleService : ISaleService
         await _saleRepository.UpdateAsync(sale, cancellationToken);
 
         await _messageSender.SendAsync(new SaleItemCancelled(saleId, saleItemId));
+    }
 
+    public async Task CancelAsync(string saleId, CancellationToken cancellationToken = default)
+    {
+        var result = await _saleRepository.CancelAsync(saleId, cancellationToken);
+        if (result == 0) throw new DomainException("##TODO: Sale not found");
+
+        await _messageSender.SendAsync(new SaleCancelled(saleId));
     }
 }
