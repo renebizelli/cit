@@ -1,4 +1,5 @@
 using Ambev.DeveloperEvaluation.Domain.Enums;
+using Ambev.DeveloperEvaluation.WebApi.Features._Shared;
 
 namespace Ambev.DeveloperEvaluation.WebApi.Features.Users._Shared;
 
@@ -36,4 +37,6 @@ public class UserResponse
     /// The current status of the user
     /// </summary>
     public UserStatus Status { get; set; }
+
+    public AddressResponse Address { get; set; } = new ();
 }

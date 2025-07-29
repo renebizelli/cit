@@ -1,4 +1,5 @@
-﻿using Ambev.DeveloperEvaluation.Domain.Enums;
+﻿using Ambev.DeveloperEvaluation.Application._Shared;
+using Ambev.DeveloperEvaluation.Domain.Enums;
 
 namespace Ambev.DeveloperEvaluation.Application.Users.CreateUser;
 
@@ -9,7 +10,7 @@ namespace Ambev.DeveloperEvaluation.Application.Users.CreateUser;
 /// This response contains the unique identifier of the newly created user,
 /// which can be used for subsequent operations or reference.
 /// </remarks>
-public class CreateUserResult
+public class CreateUserResult 
 {
     /// <summary>
     /// Gets or sets the unique identifier of the newly created user.
@@ -38,4 +39,6 @@ public class CreateUserResult
     /// Gets or sets the role of the user.
     /// </summary>
     public UserRole Role { get; set; }
+
+    public AddressResult Address { get; set; } = new();
 }

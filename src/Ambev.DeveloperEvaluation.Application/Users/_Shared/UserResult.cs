@@ -1,3 +1,4 @@
+using Ambev.DeveloperEvaluation.Application._Shared;
 using Ambev.DeveloperEvaluation.Domain.Enums;
 
 namespace Ambev.DeveloperEvaluation.Application.Users._Shared;
@@ -15,4 +16,6 @@ public class UserResult
     public UserRole Role { get; set; }
     
     public UserStatus Status { get; set; }
+
+    public AddressResult Address { get; set; } = new();
 }
