@@ -1,8 +1,9 @@
-﻿using Ambev.DeveloperEvaluation.Domain.Enums;
+﻿using Ambev.DeveloperEvaluation.Domain.Common;
+using Ambev.DeveloperEvaluation.Domain.Enums;
 using Ambev.DeveloperEvaluation.Domain.Policies;
 
 namespace Ambev.DeveloperEvaluation.Domain.Entities;
-public class Sale
+public class Sale  
 {
     public Sale(string id, long saleNumber, SaleBranch branch, SaleUser user)
     {
@@ -149,7 +150,7 @@ public class Sale
 
     public class SaleUser
     {
-        public SaleUser(Guid id, string name, string city, string state)
+        public SaleUser(Guid id, string name, string? city, string? state)
         {
             Id = id;
             Name = name;
@@ -159,7 +160,7 @@ public class Sale
 
         public Guid Id { get; private set; }
         public string Name { get; private set; } = string.Empty;
-        public string City { get; private set; } = string.Empty;
-        public string State { get; private set; } = string.Empty;
+        public string? City { get; private set; } = string.Empty;
+        public string? State { get; private set; } = string.Empty;
     }
 }

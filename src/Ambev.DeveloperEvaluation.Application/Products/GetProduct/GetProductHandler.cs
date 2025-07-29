@@ -34,7 +34,7 @@ public class GetProductHandler : IRequestHandler<GetProductCommand, ProductResul
 
         var product = await _productService.GetAsync(command.Id, cancellationToken);
 
-        if(product == null) throw new KeyNotFoundException($"##TODO: Product with ID '{command.Id}' not found.");
+        if(product == null) throw new KeyNotFoundException($"Product with ID '{command.Id}' not found.");
 
         var result = _mapper.Map<ProductResult>(product);
 

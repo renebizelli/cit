@@ -39,7 +39,7 @@ public class CartService : ICartService
 
         var count = await _repository.DeleteCartAsync(userBranchKey, cancellationToken);
 
-        if (count.Equals(0)) throw new KeyNotFoundException($"##TODO: Product not found");
+        if (count.Equals(0)) throw new KeyNotFoundException($"Product not found");
     }
 
     public async Task<Cart?> GetByUserForSaleCreatingAsync(IUserBranchKey userBranchKey, CancellationToken cancellationToken = default)

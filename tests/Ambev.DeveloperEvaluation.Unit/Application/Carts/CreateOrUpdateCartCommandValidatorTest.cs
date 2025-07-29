@@ -87,4 +87,12 @@ public class CreateOrUpdateCartCommandValidatorTest
 
         await act.Should().ThrowAsync<FluentValidation.ValidationException>();
     }
+
+    [Fact(DisplayName = "Given a valid command, it should pass validation")]
+    public async Task Valid_Command_Should_Pass_Validation()
+    {
+        var command = CreateOrUpdateCartHandlerTestData.GenerateValidCommand();
+        var act = async () => await _validatorExecutor.ValidateAsync<CreateOrUpdateCartCommandValidator, CreateOrUpdateCartCommand>(command, CancellationToken.None);
+        await act.Should().NotThrowAsync();
+    }
 }

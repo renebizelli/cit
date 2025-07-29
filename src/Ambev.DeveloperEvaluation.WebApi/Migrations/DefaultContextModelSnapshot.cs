@@ -22,6 +22,22 @@ namespace Ambev.DeveloperEvaluation.WebApi.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("Ambev.DeveloperEvaluation.Domain.Entities.Branch", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Branches", (string)null);
+                });
+
             modelBuilder.Entity("Ambev.DeveloperEvaluation.Domain.Entities.Category", b =>
                 {
                     b.Property<int>("Id")
@@ -90,7 +106,7 @@ namespace Ambev.DeveloperEvaluation.WebApi.Migrations
 
             modelBuilder.Entity("Ambev.DeveloperEvaluation.Domain.Entities.User", b =>
                 {
-                    b.OwnsOne("Ambev.DeveloperEvaluation.Domain.Entities.User.Address#Ambev.DeveloperEvaluation.Domain.ValueObjects.Address", "Address", b1 =>
+                    b.OwnsOne("Ambev.DeveloperEvaluation.Domain.ValueObjects.Address", "Address", b1 =>
                         {
                             b1.Property<Guid>("UserId")
                                 .ValueGeneratedOnAdd()
@@ -102,7 +118,7 @@ namespace Ambev.DeveloperEvaluation.WebApi.Migrations
                                 .HasColumnType("character varying(64)")
                                 .HasColumnName("City");
 
-                            b1.Property<string>("GeoLocalization")
+                            b1.Property<string>("GeoLocation")
                                 .IsRequired()
                                 .HasMaxLength(32)
                                 .HasColumnType("character varying(32)")
@@ -134,7 +150,7 @@ namespace Ambev.DeveloperEvaluation.WebApi.Migrations
 
                             b1.HasKey("UserId");
 
-                            b1.ToTable("Users", (string)null);
+                            b1.ToTable("Users");
 
                             b1.WithOwner()
                                 .HasForeignKey("UserId");

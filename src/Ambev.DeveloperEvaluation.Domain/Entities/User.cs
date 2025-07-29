@@ -12,7 +12,7 @@ namespace Ambev.DeveloperEvaluation.Domain.Entities;
 /// Represents a user in the system with authentication and profile information.
 /// This entity follows domain-driven design principles and includes business rules validation.
 /// </summary>
-public class User : BaseEntity, IUser
+public class User : BaseEntity<Guid>, IUser
 {
     /// <summary>
     /// Gets the user's full name.

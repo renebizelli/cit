@@ -30,8 +30,8 @@ public class ProductsController : BaseController
     [ProducesResponseType(typeof(ApiResponseWithData<ProductResponse>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateOrUpdateProduct([FromBody] CreateOrUpdateProductRequest request, CancellationToken cancellationToken)
     {
-        var actionResult = await ValidateAsync<CreateOrUpdateProductRequestValidator, CreateOrUpdateProductRequest>(request, cancellationToken);
-        if (actionResult != null) return actionResult;
+        await ValidateAsync<CreateOrUpdateProductRequestValidator, CreateOrUpdateProductRequest>(request, cancellationToken);
+        
 
         var command = _mapper.Map<CreateOrUpdateProductCommand>(request);
         var result = await _mediator.Send(command, cancellationToken);
@@ -46,8 +46,8 @@ public class ProductsController : BaseController
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DeleteProduct([FromRoute] DeleteProductRequest request, CancellationToken cancellationToken)
     {
-        var actionResult = await ValidateAsync<DeleteProductRequestValidator, DeleteProductRequest>(request, cancellationToken);
-        if (actionResult != null) return actionResult;
+        await ValidateAsync<DeleteProductRequestValidator, DeleteProductRequest>(request, cancellationToken);
+        
 
         var command = _mapper.Map<DeleteProductCommand>(request);
 
@@ -62,8 +62,8 @@ public class ProductsController : BaseController
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> ListProducts([FromQuery] ListProductsRequest request, CancellationToken cancellationToken)
     {
-        var actionResult = await ValidateAsync<ListProductsRequestValidator, ListProductsRequest>(request, cancellationToken);
-        if (actionResult != null) return actionResult;
+        await ValidateAsync<ListProductsRequestValidator, ListProductsRequest>(request, cancellationToken);
+        
 
         var command = _mapper.Map<ListProductsCommand>(request);
 
@@ -82,8 +82,8 @@ public class ProductsController : BaseController
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetProduct([FromRoute] GetProductRequest request, CancellationToken cancellationToken)
     {
-        var actionResult = await ValidateAsync<GetProductRequestValidator, GetProductRequest>(request, cancellationToken);
-        if (actionResult != null) return actionResult;
+        await ValidateAsync<GetProductRequestValidator, GetProductRequest>(request, cancellationToken);
+        
 
         var command = _mapper.Map<GetProductCommand>(request);
 

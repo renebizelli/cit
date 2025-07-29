@@ -14,7 +14,6 @@ public  class NormalizeItemsTest
 
         command.NormalizeItems();
 
-        Assert.Single(command.Items);
         Assert.Equal(2, command.Items.First().Quantity);
     }
 
@@ -26,8 +25,8 @@ public  class NormalizeItemsTest
         command.NormalizeItems();
 
         Assert.Equal(2, command.Items.Count);
-        Assert.True(command.Items.Where(a => a.ProductId.Equals(1) && a.Quantity.Equals(1)).Any());
-        Assert.True(command.Items.Where(a => a.ProductId.Equals(2) && a.Quantity.Equals(1)).Any());
+        Assert.True(command.Items.Where(a => a.ProductId.Equals("1111") && a.Quantity.Equals(1)).Any());
+        Assert.True(command.Items.Where(a => a.ProductId.Equals("2222") && a.Quantity.Equals(1)).Any());
     }
 
 

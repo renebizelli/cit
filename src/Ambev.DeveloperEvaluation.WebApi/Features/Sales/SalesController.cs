@@ -34,8 +34,8 @@ public class SalesController : BaseController
     {
         request.UserId = GetCurrentUserId();
 
-        var actionResult = await ValidateAsync<CreateSaleRequestValidator, CreateSaleRequest>(request, cancellationToken);
-        if (actionResult != null) return actionResult;
+        await ValidateAsync<CreateSaleRequestValidator, CreateSaleRequest>(request, cancellationToken);
+        
 
         var command = _mapper.Map<CreateSaleCommand>(request);
 
@@ -52,8 +52,8 @@ public class SalesController : BaseController
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetSale([FromRoute] GetSaleRequest request, CancellationToken cancellationToken)
     {
-        var actionResult = await ValidateAsync<GetSaleRequestValidator, GetSaleRequest>(request, cancellationToken);
-        if (actionResult != null) return actionResult;
+        await ValidateAsync<GetSaleRequestValidator, GetSaleRequest>(request, cancellationToken);
+        
 
         var command = _mapper.Map<GetSaleCommand>(request);
 
@@ -70,8 +70,8 @@ public class SalesController : BaseController
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> ListSales([FromQuery] ListSalesRequest request, CancellationToken cancellationToken)
     {
-        var actionResult = await ValidateAsync<ListSalesRequestValidator, ListSalesRequest>(request, cancellationToken);
-        if (actionResult != null) return actionResult;
+        await ValidateAsync<ListSalesRequestValidator, ListSalesRequest>(request, cancellationToken);
+        
 
         var command = _mapper.Map<ListSalesCommand>(request);
 
@@ -92,8 +92,8 @@ public class SalesController : BaseController
     {
         request.UserId = GetCurrentUserId();
 
-        var actionResult = await ValidateAsync<CancelSaleRequestValidator, CancelSaleRequest>(request, cancellationToken);
-        if (actionResult != null) return actionResult;
+        await ValidateAsync<CancelSaleRequestValidator, CancelSaleRequest>(request, cancellationToken);
+        
 
         var command = _mapper.Map<CancelSaleCommand>(request);
 
@@ -110,8 +110,8 @@ public class SalesController : BaseController
     {
         request.UserId = GetCurrentUserId();
 
-        var actionResult = await ValidateAsync<CancelSaleItemRequestValidator, CancelSaleItemRequest>(request, cancellationToken);
-        if (actionResult != null) return actionResult;
+        await ValidateAsync<CancelSaleItemRequestValidator, CancelSaleItemRequest>(request, cancellationToken);
+        
 
         var command = _mapper.Map<CancelSaleItemCommand>(request);
 

@@ -28,8 +28,7 @@ public class CartsController : BaseController
     {
         request.UserId = GetCurrentUserId();
 
-        var actionResult = await ValidateAsync<CreateOrUpdateCartRequestValidator, CreateOrUpdateCartRequest>(request, cancellationToken);
-        if(actionResult != null) return actionResult;
+        await ValidateAsync<CreateOrUpdateCartRequestValidator, CreateOrUpdateCartRequest>(request, cancellationToken);
 
         var command = _mapper.Map<CreateOrUpdateCartCommand>(request);
 
@@ -46,8 +45,8 @@ public class CartsController : BaseController
     {
         request.UserId = GetCurrentUserId();
 
-        var actionResult = await ValidateAsync<GetCartByUserRequestValidator, GetCartByUserRequest>(request, cancellationToken);
-        if (actionResult != null) return actionResult;
+        await ValidateAsync<GetCartByUserRequestValidator, GetCartByUserRequest>(request, cancellationToken);
+        
 
         var command = _mapper.Map<GetCartByUserCommand>(request);
 
@@ -64,8 +63,8 @@ public class CartsController : BaseController
     {
         request.UserId = GetCurrentUserId();
 
-        var actionResult = await ValidateAsync<DeleteCartRequestValidator, DeleteCartRequest>(request, cancellationToken);
-        if (actionResult != null) return actionResult;
+        await ValidateAsync<DeleteCartRequestValidator, DeleteCartRequest>(request, cancellationToken);
+        
 
         var command = _mapper.Map<DeleteCartCommand>(request);
 

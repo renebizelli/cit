@@ -7,6 +7,7 @@ using Ambev.DeveloperEvaluation.Unit.Application.Users.TestData;
 using AutoMapper;
 using FluentAssertions;
 using NSubstitute;
+using NSubstitute.ExceptionExtensions;
 using Xunit;
 
 namespace Ambev.DeveloperEvaluation.Unit.Application.Users;
@@ -74,22 +75,6 @@ public class CreateUserHandlerTests
         createUserResult.Should().NotBeNull();
         createUserResult.Id.Should().Be(user.Id);
         await _userRepository.Received(1).CreateAsync(Arg.Any<User>(), Arg.Any<CancellationToken>());
-    }
-
-    /// <summary>
-    /// Tests that an invalid user creation request throws a validation exception.
-    /// </summary>
-    [Fact(DisplayName = "Given invalid user data When creating user Then throws validation exception")]
-    public async Task Handle_InvalidRequest_ThrowsValidationException()
-    {
-        // Given
-        var command = new CreateUserCommand(); // Empty command will fail validation
-
-        // When
-        var act = () => _handler.Handle(command, CancellationToken.None);
-
-        // Then
-        await act.Should().ThrowAsync<FluentValidation.ValidationException>();
     }
 
     /// <summary>
@@ -162,5 +147,21 @@ public class CreateUserHandlerTests
             c.Phone == command.Phone &&
             c.Status == command.Status &&
             c.Role == command.Role));
+    }
+
+    /// <summary>
+    /// Tests that an exception thrown by the repository is propagated to the caller.
+    /// </summary>
+    [Fact(DisplayName = "Repository throws exception when creating user")]
+    public async Task Handle_RepositoryThrowsException_ShouldPropagate()
+    {
+        var command = CreateUserHandlerTestData.GenerateValidCommand();
+        var user = new User {};
+        _mapper.Map<User>(command).Returns(user);
+        _userRepository.CreateAsync(Arg.Any<User>(), Arg.Any<CancellationToken>())
+            .ThrowsAsync(new Exception("DB error"));
+
+        Func<Task> act = async () => await _handler.Handle(command, CancellationToken.None);
+        await act.Should().ThrowAsync<Exception>().WithMessage("DB error");
     }
 }

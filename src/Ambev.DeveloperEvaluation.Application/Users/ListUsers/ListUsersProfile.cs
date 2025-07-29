@@ -3,7 +3,7 @@ using Ambev.DeveloperEvaluation.Application.Users._Shared;
 using Ambev.DeveloperEvaluation.Domain.Entities;
 using AutoMapper;
 
-namespace Ambev.DeveloperEvaluation.Application.Userss.ListUsers;
+namespace Ambev.DeveloperEvaluation.Application.Users.ListUsers;
 
 internal class ListUsersProfile : Profile
 {

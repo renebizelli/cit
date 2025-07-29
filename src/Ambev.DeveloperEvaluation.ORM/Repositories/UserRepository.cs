@@ -44,7 +44,7 @@ public class UserRepository : IUserRepository
     /// <returns>The user if found, null otherwise</returns>
     public async Task<User?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        return await _context.Users.FirstOrDefaultAsync(o=> o.Id == id, cancellationToken);
+        return await _context.Users.Include(a => a.Address).AsNoTracking().FirstOrDefaultAsync(o=> o.Id == id, cancellationToken);
     }
 
     /// <summary>
@@ -79,6 +79,7 @@ public class UserRepository : IUserRepository
     public async Task<(int, IList<User>)> ListUsersAsync(IUserQuerySettings querySettings, Dictionary<string, Expression<Func<User, object>>> allowedOrderFields, CancellationToken cancellationToken)
     {
         var query = _context.Users
+                    .Include(a => a.Address)
                     .AsNoTracking()
                     .ApplyWhereLike(querySettings.Username, w => w.Username)
                     .ApplyWhereLike(querySettings.Email, w => w.Email)

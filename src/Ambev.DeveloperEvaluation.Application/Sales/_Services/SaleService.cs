@@ -1,4 +1,5 @@
-﻿using Ambev.DeveloperEvaluation.Domain.Entities;
+﻿using Ambev.DeveloperEvaluation.Application.Branches._Services;
+using Ambev.DeveloperEvaluation.Domain.Entities;
 using Ambev.DeveloperEvaluation.Domain.Interfaces;
 using Ambev.DeveloperEvaluation.Domain.Messages;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
@@ -11,6 +12,7 @@ namespace Ambev.DeveloperEvaluation.Application.Sales._Services;
 public class SaleService : ISaleService
 {
     private readonly ISaleRepository _saleRepository;
+    private readonly IUserService _userService;
     private readonly ICartService _cartService;
     private readonly IProductService _productService;
     private readonly ISalePricingService _salePricingService;
@@ -19,6 +21,7 @@ public class SaleService : ISaleService
     private readonly ILongIDGenerator _longIDGenerator;
     private readonly IMinimumCartItemSpecification _minimumCartItem;
     private readonly ISaleItemQuantityWithinRangeSpecification _saleItemQuantityWithinRange;
+    private readonly IBranchService _branchService;
 
     public SaleService(
         ISaleRepository saleRepository,
@@ -29,7 +32,9 @@ public class SaleService : ISaleService
         IMinimumCartItemSpecification minimumCartItem,
         ISaleItemQuantityWithinRangeSpecification saleItemQuantityWithinRange,
         IStringIDGenerator stringIDGenerator,
-        ILongIDGenerator longIDGenerator)
+        ILongIDGenerator longIDGenerator,
+        IUserService userService,
+        IBranchService branchService)
     {
         _saleRepository = saleRepository;
         _cartService = cartService;
@@ -40,13 +45,15 @@ public class SaleService : ISaleService
         _saleItemQuantityWithinRange = saleItemQuantityWithinRange;
         _stringIDGenerator = stringIDGenerator;
         _longIDGenerator = longIDGenerator;
+        _userService = userService;
+        _branchService = branchService;
     }
 
     public async Task<Sale> CreateAsync(IUserBranchKey userBranchKey, CancellationToken cancellationToken = default)
     {
         var cart = await GetCartByUserForSaleCreatingAsync(userBranchKey, cancellationToken);
 
-        if (!_minimumCartItem.IsSatisfiedBy(cart)) throw new DomainException("##TODO: Invalid quantity of items cart");
+        if (!_minimumCartItem.IsSatisfiedBy(cart)) throw new DomainException("Invalid quantity of items cart");
 
         SaleItemQuantityWithinRange(cart);
 
@@ -67,7 +74,7 @@ public class SaleService : ISaleService
     {
         var cart = await _cartService.GetByUserForSaleCreatingAsync(userBranchKey, cancellationToken);
 
-        if (cart == null) throw new InvalidOperationException("##TODO: Cart not found for sale creation");
+        if (cart == null) throw new InvalidOperationException("Cart not found for sale creation");
 
         return cart;
     }
@@ -76,25 +83,31 @@ public class SaleService : ISaleService
     {
         foreach (var item in cart.Items)
         {
-            if (!_saleItemQuantityWithinRange.IsSatisfiedBy(item.Quantity)) throw new DomainException("##TODO: Invalid quantity of item");
+            if (!_saleItemQuantityWithinRange.IsSatisfiedBy(item.Quantity)) throw new DomainException("Invalid quantity of item");
         }
     }
 
     private async Task<Sale> SaleMappingAsync(Cart cart, CancellationToken cancellationToken)
     {
         var saleNumber = await _longIDGenerator.GenerateSaleNumber(cancellationToken);
-        if (saleNumber <= 0) throw new DomainException("##TODO: Invalid sale number generated");
+        if (saleNumber <= 0) throw new DomainException("Invalid sale number generated");
+
+        var user = await _userService.GetByIdAsync(cart.UserId, cancellationToken);
+        if (user == null) throw new DomainException("Invalid user");
+
+        var branch = await _branchService.GetAsync(cart.BranchId, cancellationToken);
+        if (branch == null) throw new DomainException("Invalid branch");
 
         var sale = new Sale(
             _stringIDGenerator.Generate(),
             saleNumber,
-            new Sale.SaleBranch(cart.BranchId, "TODO"),
-            new Sale.SaleUser(cart.UserId, "TODO", "TODO", "TODO"));
+            new Sale.SaleBranch(cart.BranchId, branch.Name),
+            new Sale.SaleUser(cart.UserId, user.Username, user.Address?.City, user.Address?.State));
 
         foreach (var item in cart.Items)
         {
             var product = await _productService.GetAsync(item.ProductId, cancellationToken);
-            if (product == null) throw new InvalidOperationException($"##TODO: Product with ID {item.ProductId} not found.");
+            if (product == null) throw new InvalidOperationException($"Product with ID {item.ProductId} not found.");
 
             var saleItem = new Sale.SaleItem(
                 _stringIDGenerator.Generate(),
@@ -111,7 +124,7 @@ public class SaleService : ISaleService
     public async Task<Sale> GetAsync(string id, long saleNumber, CancellationToken cancellationToken = default)
     {
         var sale = await _saleRepository.GetAsync(id, saleNumber, cancellationToken);
-        if (sale == null) throw new DomainException("##TODO: Sale not found");
+        if (sale == null) throw new DomainException("Sale not found");
 
         sale.AttachEvents();
 
@@ -121,10 +134,10 @@ public class SaleService : ISaleService
     public async Task CancelSaleItemAsync(string saleId, string saleItemId, CancellationToken cancellationToken = default)
     {
         var sale = await GetAsync(saleId, 0, cancellationToken);
-        if (sale == null) throw new DomainException("##TODO: Sale not found");
+        if (sale == null) throw new DomainException("Sale not found");
 
         var item = sale.Items.FirstOrDefault(f => f.Id == saleItemId);   
-        if (item == null) throw new DomainException("##TODO: Sale Item not found");
+        if (item == null) throw new DomainException("Sale Item not found");
 
         item.Cancel();
 
@@ -138,7 +151,7 @@ public class SaleService : ISaleService
     public async Task CancelAsync(string saleId, CancellationToken cancellationToken = default)
     {
         var result = await _saleRepository.CancelAsync(saleId, cancellationToken);
-        if (result == 0) throw new DomainException("##TODO: Sale not found");
+        if (result == 0) throw new DomainException("Sale not found");
 
         await _messageSender.SendAsync(new SaleCancelled(saleId));
     }

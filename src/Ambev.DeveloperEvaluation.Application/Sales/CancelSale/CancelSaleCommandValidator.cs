@@ -6,6 +6,6 @@ public class CancelSaleCommandValidator : AbstractValidator<CancelSaleCommand>
 {
     public CancelSaleCommandValidator()
     {
-        RuleFor(f => f.Id).NotEmpty().WithMessage("##TODO: SaleId must not be empty");
+        RuleFor(f => f.Id).NotEmpty().WithMessage("SaleId must not be empty");
     }
 }

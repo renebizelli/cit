@@ -9,6 +9,7 @@ using AutoMapper;
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
+using NSubstitute.ExceptionExtensions;
 using Xunit;
 
 namespace Ambev.DeveloperEvaluation.Unit.Application.Carts;
@@ -57,4 +58,15 @@ public class DeleteCartHandlerTest
     //    await act.Should().ThrowAsync<KeyNotFoundException>();
 
     //}
+    
+    [Fact(DisplayName = "Service throws exception when deleting cart")]
+    public async Task Handle_ServiceThrowsException_ShouldPropagate()
+    {
+        var command = DeleteCartHandlerTestData.GenerateValidCommand();
+        _service.DeleteAsync(Arg.Any<UserBranchKey>(), Arg.Any<CancellationToken>())
+            .ThrowsAsync(new Exception("Service error"));
+
+        Func<Task> act = async () => await _handler.Handle(command, CancellationToken.None);
+        await act.Should().ThrowAsync<Exception>().WithMessage("Service error");
+    }
 }

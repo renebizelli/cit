@@ -1,8 +1,8 @@
-﻿using Ambev.DeveloperEvaluation.Domain.Enums;
+﻿using Ambev.DeveloperEvaluation.Domain.Common;
 
 namespace Ambev.DeveloperEvaluation.Domain.Entities;
 
-public class Product
+public class Product  
 {
     public string Id { get; set; } = string.Empty;
     public string Title { get; set; } = string.Empty;

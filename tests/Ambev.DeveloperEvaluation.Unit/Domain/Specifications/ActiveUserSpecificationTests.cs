@@ -24,5 +24,13 @@ namespace Ambev.DeveloperEvaluation.Unit.Domain.Specifications
             // Assert
             result.Should().Be(expectedResult);
         }
+
+        [Fact(DisplayName = "IsSatisfiedBy should return false for null user")]
+        public void IsSatisfiedBy_ShouldReturnFalse_ForNullUser()
+        {
+            var specification = new ActiveUserSpecification();
+            var result = specification.IsSatisfiedBy(null);
+            result.Should().BeFalse();
+        }
     }
 }

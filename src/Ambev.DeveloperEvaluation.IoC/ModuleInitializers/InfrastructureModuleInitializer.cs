@@ -25,6 +25,7 @@ public class InfrastructureModuleInitializer : IModuleInitializer
         builder.Services.AddScoped<ICartRepository, CartRepository>();
         builder.Services.AddScoped<ICacheRepository, RedisRepository>();
         builder.Services.AddScoped<ISaleRepository, SaleRepository>();
+        builder.Services.AddScoped<IBranchRepository, BranchRepository>();
         builder.Services.AddScoped<IStringIDGenerator, MongoDbStringIDGenerator>();
         builder.Services.AddScoped<ILongIDGenerator, MongoDbLongSequenceIDGenerator>();
 

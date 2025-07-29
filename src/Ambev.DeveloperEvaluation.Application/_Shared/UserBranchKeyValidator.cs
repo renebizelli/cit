@@ -6,7 +6,12 @@ public class UserBranchKeyValidator : AbstractValidator<UserBranchKey>
 {
     public UserBranchKeyValidator()
     {
-        RuleFor(f => f.UserId).NotEqual(Guid.Empty).WithMessage("##TODO: Invalid UserId");
-        RuleFor(f => f.BranchId).NotEqual(Guid.Empty).WithMessage("##TODO: Invalid BranchId");
+        RuleFor(f => f.UserId)
+            .NotEqual(Guid.Empty)
+            .WithMessage("UserId is required.");
+
+        RuleFor(f => f.BranchId)
+            .NotEqual(Guid.Empty)
+            .WithMessage("BranchId is required.");
     }
 }

@@ -6,7 +6,7 @@ public class CancelSaleItemRequestValidator : AbstractValidator<CancelSaleItemRe
 {
     public CancelSaleItemRequestValidator()
     {
-        RuleFor(f => f.SaleId).NotEmpty().WithMessage("##TODO: SaleId must be great than zero");
-        RuleFor(f => f.SaleItemId).NotEmpty().WithMessage("##TODO: SaleItemId must be great than zero");
+        RuleFor(f => f.SaleId).NotEmpty().WithMessage("SaleId must be great than zero");
+        RuleFor(f => f.SaleItemId).NotEmpty().WithMessage("SaleItemId must be great than zero");
     }
 }

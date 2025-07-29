@@ -1,7 +1,7 @@
 ﻿using Ambev.DeveloperEvaluation.Application.Users.CreateUser;
 using Ambev.DeveloperEvaluation.Application.Users.DeleteUser;
 using Ambev.DeveloperEvaluation.Application.Users.GetUser;
-using Ambev.DeveloperEvaluation.Application.Userss.ListUsers;
+using Ambev.DeveloperEvaluation.Application.Users.ListUsers;
 using Ambev.DeveloperEvaluation.WebApi.Common;
 using Ambev.DeveloperEvaluation.WebApi.Features.Users._Shared;
 using Ambev.DeveloperEvaluation.WebApi.Features.Users.CreateUser;
@@ -36,8 +36,8 @@ public class UsersController : BaseController
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateUser([FromBody] CreateUserRequest request, CancellationToken cancellationToken)
     {
-        var actionResult = await ValidateAsync<CreateUserRequestValidator, CreateUserRequest>(request, cancellationToken);
-        if (actionResult != null) return actionResult;
+        await ValidateAsync<CreateUserRequestValidator, CreateUserRequest>(request, cancellationToken);
+        
 
         var command = _mapper.Map<CreateUserCommand>(request);
         var result = await _mediator.Send(command, cancellationToken);
@@ -61,8 +61,8 @@ public class UsersController : BaseController
     {
         var request = new GetUserRequest { Id = id };
 
-        var actionResult = await ValidateAsync<GetUserRequestValidator, GetUserRequest>(request, cancellationToken);
-        if (actionResult != null) return actionResult;
+        await ValidateAsync<GetUserRequestValidator, GetUserRequest>(request, cancellationToken);
+        
 
         var command = _mapper.Map<GetUserCommand>(request.Id);
         var response = await _mediator.Send(command, cancellationToken);
@@ -76,8 +76,8 @@ public class UsersController : BaseController
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> ListUsers([FromQuery] ListUsersRequest request, CancellationToken cancellationToken)
     {
-        var actionResult = await ValidateAsync<ListUsersRequestValidator, ListUsersRequest>(request, cancellationToken);
-        if (actionResult != null) return actionResult;
+        await ValidateAsync<ListUsersRequestValidator, ListUsersRequest>(request, cancellationToken);
+        
 
         var command = _mapper.Map<ListUsersCommand>(request);
 
@@ -104,8 +104,8 @@ public class UsersController : BaseController
     {
         var request = new DeleteUserRequest { Id = id };
         
-        var actionResult = await ValidateAsync<DeleteUserRequestValidator, DeleteUserRequest>(request, cancellationToken);
-        if (actionResult != null) return actionResult;
+        await ValidateAsync<DeleteUserRequestValidator, DeleteUserRequest>(request, cancellationToken);
+        
 
         var command = _mapper.Map<DeleteUserCommand>(request.Id);
         await _mediator.Send(command, cancellationToken);

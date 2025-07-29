@@ -8,6 +8,6 @@ public class DeleteProductCommandValidator : AbstractValidator<DeleteProductComm
     {
         RuleFor(x => x.Id)
             .NotEmpty()
-            .WithMessage("##TODO: Product ID must not be empty.");
+            .WithMessage("Product ID must not be empty.");
     }
 }
