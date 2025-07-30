@@ -28,6 +28,9 @@ public class InfrastructureModuleInitializer : IModuleInitializer
         builder.Services.AddScoped<IBranchRepository, BranchRepository>();
         builder.Services.AddScoped<IStringIDGenerator, MongoDbStringIDGenerator>();
         builder.Services.AddScoped<ILongIDGenerator, MongoDbLongSequenceIDGenerator>();
+        builder.Services.AddScoped<IProductRatingRepository, ProductRatingRepository>();
+
+        
 
         new MongoDbInitialize().Initialize(builder);
 

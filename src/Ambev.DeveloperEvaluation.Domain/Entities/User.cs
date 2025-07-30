@@ -63,6 +63,8 @@ public class User : BaseEntity<Guid>, IUser
 
     public Address? Address { get; set; }
 
+    public ICollection<ProductRating> ProductRatings { get; set; } = new List<ProductRating>();
+
     /// <summary>
     /// Gets the unique identifier of the user.
     /// </summary>

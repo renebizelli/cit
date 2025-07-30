@@ -14,6 +14,8 @@ namespace Ambev.DeveloperEvaluation.IoC.ModuleInitializers
 
             builder.Services.AddControllers();
             builder.Services.AddHealthChecks();
+
+
         }
     }
 }

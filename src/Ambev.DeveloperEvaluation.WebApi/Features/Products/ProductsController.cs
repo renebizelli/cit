@@ -1,4 +1,5 @@
-﻿using Ambev.DeveloperEvaluation.Application.Products._Shared;
+﻿using Ambev.DeveloperEvaluation.Application.ProductRatings;
+using Ambev.DeveloperEvaluation.Application.Products._Shared;
 using Ambev.DeveloperEvaluation.Application.Products.CreateOrUpdateProduct;
 using Ambev.DeveloperEvaluation.Application.Products.DeleteProduct;
 using Ambev.DeveloperEvaluation.Application.Products.GetProduct;
@@ -10,6 +11,7 @@ using Ambev.DeveloperEvaluation.WebApi.Features.Products.CreateOrUpdateProduct;
 using Ambev.DeveloperEvaluation.WebApi.Features.Products.DeleteProduct;
 using Ambev.DeveloperEvaluation.WebApi.Features.Products.GetProduct;
 using Ambev.DeveloperEvaluation.WebApi.Features.Products.ListProducts;
+using Ambev.DeveloperEvaluation.WebApi.Features.Products.Rating;
 using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -33,7 +35,6 @@ public class ProductsController : BaseController
     public async Task<IActionResult> CreateOrUpdateProduct([FromBody] CreateOrUpdateProductRequest request, CancellationToken cancellationToken)
     {
         await ValidateAsync<CreateOrUpdateProductRequestValidator, CreateOrUpdateProductRequest>(request, cancellationToken);
-        
 
         var command = _mapper.Map<CreateOrUpdateProductCommand>(request);
         var result = await _mediator.Send(command, cancellationToken);
@@ -50,7 +51,6 @@ public class ProductsController : BaseController
     public async Task<IActionResult> DeleteProduct([FromRoute] DeleteProductRequest request, CancellationToken cancellationToken)
     {
         await ValidateAsync<DeleteProductRequestValidator, DeleteProductRequest>(request, cancellationToken);
-        
 
         var command = _mapper.Map<DeleteProductCommand>(request);
 
@@ -67,7 +67,6 @@ public class ProductsController : BaseController
     public async Task<IActionResult> ListProducts([FromQuery] ListProductsRequest request, CancellationToken cancellationToken)
     {
         await ValidateAsync<ListProductsRequestValidator, ListProductsRequest>(request, cancellationToken);
-        
 
         var command = _mapper.Map<ListProductsCommand>(request);
 
@@ -88,7 +87,6 @@ public class ProductsController : BaseController
     public async Task<IActionResult> GetProduct([FromRoute] GetProductRequest request, CancellationToken cancellationToken)
     {
         await ValidateAsync<GetProductRequestValidator, GetProductRequest>(request, cancellationToken);
-        
 
         var command = _mapper.Map<GetProductCommand>(request);
 
@@ -97,5 +95,24 @@ public class ProductsController : BaseController
         var response = _mapper.Map<ProductResponse>(result);
 
         return Ok(response);
+    }
+
+
+    [Authorize]
+    [HttpPost("{productId}/rating", Name = "SaveRating")]
+    [ProducesResponseType(typeof(ApiResponseWithData<ProductResponse>), StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(ApiResponseWithData<ProductResponse>), StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> SaveRating([FromRoute] string productId, [FromBody] ProductRatingRequest request, CancellationToken cancellationToken)
+    {
+        request.ProductId = productId;
+        request.UserId = GetCurrentUserId();
+
+        await ValidateAsync<ProductRatingRequestValidator, ProductRatingRequest>(request, cancellationToken);
+
+        var command = _mapper.Map<ProductRatingCommand>(request);
+
+        await _mediator.Send(command, cancellationToken);
+
+        return NoContent(); 
     }
 }
