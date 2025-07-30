@@ -12,10 +12,5 @@ public class ListProductsProfile : Profile
         CreateMap<(long TotalCount, IList<Product> Products), PaginatedResult<ProductResult>>()
             .ForMember(f => f.TotalCount, o => o.MapFrom(m => m.TotalCount))
             .ForMember(f => f.Items, o => o.MapFrom(m => m.Products));
-
-        CreateMap<Product, ProductResult>()
-            .ForMember(f => f.Rating, o => o.Ignore());
-
-        CreateMap<Category, ProductCategoryResult>();
     }
 }

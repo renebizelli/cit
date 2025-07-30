@@ -11,4 +11,6 @@ public interface IProductRepository
     Task<Product?> GetAsync(string productId, CancellationToken cancellationToken);
     Task<bool> IsNameAlreadyUsedAsync(string title, CancellationToken cancellationToken);
     Task<(long, IList<Product>)> ListProductsAsync(IProductQuerySettings querySettings, Dictionary<string, Expression<Func<Product, object>>> allowedOrderFields, CancellationToken cancellationToken);
+    Task<IList<Product>> ListAllActiveAsync(CancellationToken cancellationToken);
+    Task RatingUpdateAsync(string productId, Product.RatingValues rating, CancellationToken cancellationToken);
 }

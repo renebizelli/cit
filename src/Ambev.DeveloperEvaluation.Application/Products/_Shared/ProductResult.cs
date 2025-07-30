@@ -19,6 +19,6 @@ public class ProductCategoryResult
 
 public class ProductRatingResult
 {
-    public int Count { get; set; }
-    public decimal Rate { get; set; }
+    public long Count { get; set; }
+    public decimal Avg { get; set; }
 }

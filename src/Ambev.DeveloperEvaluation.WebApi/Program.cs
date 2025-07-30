@@ -4,8 +4,10 @@ using Ambev.DeveloperEvaluation.Common.Logging;
 using Ambev.DeveloperEvaluation.Common.Security;
 using Ambev.DeveloperEvaluation.Common.Validation;
 using Ambev.DeveloperEvaluation.IoC;
+using Ambev.DeveloperEvaluation.Jobs;
 using Ambev.DeveloperEvaluation.ORM;
 using Ambev.DeveloperEvaluation.WebApi.Middleware;
+using Coravel;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
@@ -18,18 +20,17 @@ public class Program
     {
         try
         {
-
         }
         catch (Exception ex)
         {
             Log.Fatal(ex, "Application terminated unexpectedly");
+
+            Console.WriteLine(ex.Message);
         }
         finally
         {
             Log.CloseAndFlush();
         }
-
-
         Log.Information("Starting web application");
 
             WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
@@ -48,6 +49,9 @@ public class Program
                 )
             );
 
+
+            builder.Services.AddScheduler();
+
             builder.Services.AddJwtAuthentication(builder.Configuration);
 
             builder.RegisterDependencies();
@@ -63,8 +67,9 @@ public class Program
             });
 
             builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+        builder.Services.AddTransient<RecalculateProductRatingsJob>();
 
-            var app = builder.Build();
+        var app = builder.Build();
             app.UseMiddleware<ValidationExceptionMiddleware>();
 
             if (app.Environment.IsDevelopment())
@@ -72,6 +77,14 @@ public class Program
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+
+
+        app.Services.UseScheduler(s =>
+            {
+                s.Schedule<RecalculateProductRatingsJob>()
+                    .EveryThirtyMinutes()
+                    .RunOnceAtStart();
+            });
 
             app.UseHttpsRedirection();
 

@@ -11,11 +11,5 @@ internal class CreateOrUpdateProductProfile : Profile
         CreateMap<CreateOrUpdateProductCommand, Product>()
            .ForMember(f => f.Category, o => o.MapFrom(m => new Category { Id = m.CategoryId }))
            .ForMember(f => f.Active, o => o.MapFrom(m => true));
-
-        CreateMap<Product, ProductResult>()
-            .ForMember(f => f.Rating, o => o.Ignore());
-
-        CreateMap<Category, ProductCategoryResult>();
-
     }
 }

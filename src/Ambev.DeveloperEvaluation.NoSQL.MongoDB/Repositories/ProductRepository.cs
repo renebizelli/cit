@@ -35,11 +35,28 @@ public class ProductRepository : IProductRepository
                         .Set(s => s.Image, product.Image)
                         .Set(s => s.Category, product.Category)
                         .SetOnInsert(s => s.Active, true)
-                        .SetOnInsert(s => s.Id, product.Id);
+                        .SetOnInsert(s => s.Id, product.Id)
+                        .SetOnInsert(s => s.Rating, product.Rating);
 
         await _collection.UpdateOneAsync(filter, update, new UpdateOptions { IsUpsert = true }, cancellationToken);
 
         return product;
+    }
+
+    public async Task RatingUpdateAsync(string productId,  Product.RatingValues rating, CancellationToken cancellationToken)
+    {
+        if (string.IsNullOrEmpty(productId)) throw new ArgumentNullException(nameof(productId));
+        if (rating == null) throw new ArgumentNullException(nameof(productId));
+
+        var filter =
+            Builders<Product>.Filter.And(
+            Builders<Product>.Filter.Eq(e => e.Id, productId),
+            Builders<Product>.Filter.Eq(e => e.Active, true));
+
+        var update = Builders<Product>.Update
+                        .Set(s => s.Rating, rating);
+
+        await _collection.UpdateOneAsync(filter, update, new(), cancellationToken);
     }
 
     public async Task<long> DeleteAsync(string productId, CancellationToken cancellationToken)
@@ -98,5 +115,11 @@ public class ProductRepository : IProductRepository
 
         return (count, products);
     }
+
+    public async Task<IList<Product>> ListAllActiveAsync(CancellationToken cancellationToken)
+    {
+        var filter = Builders<Product>.Filter.Eq(e => e.Active, true);
+        return await _collection.Find(filter).ToListAsync(cancellationToken);
+    }   
 }
 
