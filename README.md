@@ -16,6 +16,7 @@ Entidades envolvidas:
 - Users
 - Branches
 - Products
+- ProductRating
 - Categories
 
 ### Cart
@@ -53,6 +54,10 @@ Entidades envolvidas:
 - O `Id` do produto é do tipo _string_, por conta do MongoDB.
 - A lista de produtos está paginada e com filtros.
 
+### Rating de produtos
+- É armazenado no PostgreSQL.
+- Na API há um job, utilizando Coravel para o agendamento, que recalcula o rating dos produtos a cada 30 minutos.
+
 ### Category
 
 - É armazenada no PostgreSQL.
@@ -80,5 +85,6 @@ Entidades envolvidas:
 - Os valores das regras de desconto serem parametrizados.
 - Filtrar produtos por categoria na rota. Exemplo: `/products/cerveja`.
 - Criar índices tanto nas tabelas do PostgreSQL quanto nas _collections_ do MongoDB.
-- _Rating_ de produtos: somente recalcular se houver mudanças.
+- _Rating_ de produtos: criar um projeto isolado para recalculo dos ratings dos produtos.
+- Tempo de recalculo do _rating_ ser parametrizado.
 - Adicionar _logs_ e tratamentos de erros na aplicação de _Jobs_.
