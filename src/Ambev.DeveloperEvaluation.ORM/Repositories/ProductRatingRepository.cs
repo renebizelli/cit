@@ -36,10 +36,15 @@ public class ProductRatingRepository : IProductRatingRepository
             .Where(x => x.ProductId == productId)
             .CountAsync(cancellationToken);
 
-        var rating =  await _context.ProductRatings
-            .Where(x => x.ProductId == productId)
-            .AverageAsync(x => x.Rating, cancellationToken);
+        if (count > 0)
+        {
+            var rating = await _context.ProductRatings
+                .Where(x => x.ProductId == productId)
+                .AverageAsync(x => x.Rating, cancellationToken);
 
-        return (count, rating);
+            return (count, rating);
+        }
+
+        return (count, 0);
     }
 }

@@ -53,7 +53,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 		CIT.postman_collection.json = CIT.postman_collection.json
-		C:\Users\René\Downloads\README.md = C:\Users\René\Downloads\README.md
+		README.md = README.md
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ambev.DeveloperEvaluation.Cache.Redis", "src\Ambev.DeveloperEvaluation.Cache.Redis\Ambev.DeveloperEvaluation.Cache.Redis.csproj", "{982EBAE1-F994-417F-B530-A0632C4101CA}"
@@ -61,10 +61,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ambev.DeveloperEvaluation.NoSQL.MongoDB", "src\Ambev.DeveloperEvaluation.NoSQL.MongoDB\Ambev.DeveloperEvaluation.NoSQL.MongoDB.csproj", "{7A0FC521-3C2E-4039-B518-A58F4609C84F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ambev.DeveloperEvaluation.Messaging.Rebus", "src\Ambev.DeveloperEvaluation.Messaging.Rebus\Ambev.DeveloperEvaluation.Messaging.Rebus.csproj", "{327B04C1-0525-4617-87FE-A74C32F4164B}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Jobs", "Jobs", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ambev.DeveloperEvaluation.Jobs", "src\Ambev.DeveloperEvaluation.Jobs\Ambev.DeveloperEvaluation.Jobs.csproj", "{7F929E75-AF9F-4364-8869-163FBCF424F2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -124,10 +120,6 @@ Global
 		{327B04C1-0525-4617-87FE-A74C32F4164B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{327B04C1-0525-4617-87FE-A74C32F4164B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{327B04C1-0525-4617-87FE-A74C32F4164B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7F929E75-AF9F-4364-8869-163FBCF424F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7F929E75-AF9F-4364-8869-163FBCF424F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7F929E75-AF9F-4364-8869-163FBCF424F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7F929E75-AF9F-4364-8869-163FBCF424F2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -154,8 +146,6 @@ Global
 		{982EBAE1-F994-417F-B530-A0632C4101CA} = {BD3812F8-8783-42C6-B231-8A032EF9481F}
 		{7A0FC521-3C2E-4039-B518-A58F4609C84F} = {BD3812F8-8783-42C6-B231-8A032EF9481F}
 		{327B04C1-0525-4617-87FE-A74C32F4164B} = {BD3812F8-8783-42C6-B231-8A032EF9481F}
-		{02EA681E-C7D8-13C7-8484-4AC65E1B71E8} = {FC704106-833B-484D-B71C-E45123A9EC30}
-		{7F929E75-AF9F-4364-8869-163FBCF424F2} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {13EAB81A-C6B2-4C22-B4DE-C6603FC445B6}
