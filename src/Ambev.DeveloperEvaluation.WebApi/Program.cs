@@ -18,19 +18,7 @@ public class Program
     {
         try
         {
-
-        }
-        catch (Exception ex)
-        {
-            Log.Fatal(ex, "Application terminated unexpectedly");
-        }
-        finally
-        {
-            Log.CloseAndFlush();
-        }
-
-
-        Log.Information("Starting web application");
+            Log.Information("Starting web application");
 
             WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
             builder.AddDefaultLogging();
@@ -83,6 +71,16 @@ public class Program
             app.MapControllers();
 
             app.Run();
+        }
+        catch (Exception ex)
+        {
+            Log.Fatal(ex, "Application terminated unexpectedly");
 
+            Console.WriteLine(ex.Message);   
+        }
+        finally
+        {
+            Log.CloseAndFlush();
+        }
     }
 }

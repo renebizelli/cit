@@ -72,6 +72,7 @@ public class ProductService : IProductService
         if (product != null) return product;
          
         product = await _repository.GetAsync(productId, cancellationToken);
+        if (product == null) throw new KeyNotFoundException($"Product with ID '{productId}' not found.");
 
         if (product != null)
         {
@@ -91,5 +92,15 @@ public class ProductService : IProductService
 
         if (count.Equals(0)) throw new KeyNotFoundException($"Product not found");
 
+    }
+
+    public async Task<IList<Product>> ListAllActiveAsync(CancellationToken cancellationToken)
+    {
+        return await _repository.ListAllActiveAsync(cancellationToken);
+    }
+
+    public async Task RatingUpdateAsync(string productId, Product.RatingValues ratingValues, CancellationToken cancellationToken)
+    {
+        await _repository.RatingUpdateAsync(productId, ratingValues, cancellationToken);
     }
 }

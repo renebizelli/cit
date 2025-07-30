@@ -9,4 +9,6 @@ public interface IProductService
     Task<(long, IList<Product>)> ListProductsAsync(IProductQuerySettings querySettings, CancellationToken cancellationToken);
     Task<Product?> GetAsync(string productId, CancellationToken cancellationToken);
     Task DeleteAsync(string productId, CancellationToken cancellationToken);
+    Task<IList<Product>> ListAllActiveAsync(CancellationToken cancellationToken);
+    Task RatingUpdateAsync(string productId, Product.RatingValues ratingValues, CancellationToken cancellationToken);
 }
