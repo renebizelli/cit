@@ -112,7 +112,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\" : \"admin@teste.com\",\r\n    \"password\" : \"Rene!123\"\r\n}  ",
+							"raw": "{\r\n    \"email\" : \"user@teste.com\",\r\n    \"password\" : \"Rene!123\"\r\n}  ",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -556,7 +556,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "  {\r\n    \"title\": \"Cha gelado\",\r\n    \"price\": 23.20,\r\n    \"description\": \"abc teste de cerveja\",\r\n    \"categoryId\": 2,\r\n    \"image\": \"wwww\"\r\n  }",
+							"raw": "  {\r\n    \"title\": \"Cha Limao Ice\",\r\n    \"price\": 10.20,\r\n    \"description\": \"abc teste de cerveja\",\r\n    \"categoryId\": 2,\r\n    \"image\": \"wwww\"\r\n  }",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -644,6 +644,44 @@
 							"path": [
 								"products",
 								"6883c984a674c29e71e373e0"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/rating",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"rating\" : 5\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/products/6889a07bf243773aa7efd628/rating",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"products",
+								"6889a07bf243773aa7efd628",
+								"rating"
 							]
 						}
 					},
